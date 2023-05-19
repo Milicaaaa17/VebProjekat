@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\PC\\Desktop\\ProjekatVeb2\\ProjekatVeb2\\ProjekatVeb2.csproj": {}
+    "C:\\Users\\PC\\Desktop\\VEB_Projekat\\VebProjekat\\ProjekatVeb2\\ProjekatVeb2\\ProjekatVeb2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\PC\\Desktop\\ProjekatVeb2\\ProjekatVeb2\\ProjekatVeb2.csproj": {
+    "C:\\Users\\PC\\Desktop\\VEB_Projekat\\VebProjekat\\ProjekatVeb2\\ProjekatVeb2\\ProjekatVeb2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\PC\\Desktop\\ProjekatVeb2\\ProjekatVeb2\\ProjekatVeb2.csproj",
+        "projectUniqueName": "C:\\Users\\PC\\Desktop\\VEB_Projekat\\VebProjekat\\ProjekatVeb2\\ProjekatVeb2\\ProjekatVeb2.csproj",
         "projectName": "ProjekatVeb2",
-        "projectPath": "C:\\Users\\PC\\Desktop\\ProjekatVeb2\\ProjekatVeb2\\ProjekatVeb2.csproj",
+        "projectPath": "C:\\Users\\PC\\Desktop\\VEB_Projekat\\VebProjekat\\ProjekatVeb2\\ProjekatVeb2\\ProjekatVeb2.csproj",
         "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\PC\\Desktop\\ProjekatVeb2\\ProjekatVeb2\\obj\\",
+        "outputPath": "C:\\Users\\PC\\Desktop\\VEB_Projekat\\VebProjekat\\ProjekatVeb2\\ProjekatVeb2\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",

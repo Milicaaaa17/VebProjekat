@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "mAhw3cATzvKgu9lr+LNWgqUQCIgz7mT/bo/Dm/W0KtKDlciRLzqdf5vZGgBDKPW/2iVv5LDkB+N1OMtA3VikbA==",
+  "dgSpecHash": "/6F2zIHxonsxhxpWGT0WilB+xTTgh7GT9HCTMhog5SsGGmmak0nph2paKOZP801WYmaN6yj5wNX1NogFbVGULQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\PC\\Desktop\\ProjekatVeb2\\ProjekatVeb2\\ProjekatVeb2.csproj",
+  "projectFilePath": "C:\\Users\\PC\\Desktop\\VEB_Projekat\\VebProjekat\\ProjekatVeb2\\ProjekatVeb2\\ProjekatVeb2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\PC\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
