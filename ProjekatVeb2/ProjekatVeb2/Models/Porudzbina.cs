@@ -17,6 +17,6 @@ namespace ProjekatVeb2.Models
         public float CijenaDostave { get; } = 200;       
         public StatusPorudzbine Status { get; set; }
         public Kupac Kupac { get; set; }
-        public int KupacID { get; set; }
+        public string KupacID { get; set; }
     }
 }

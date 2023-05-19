@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using ProjekatVeb2.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<DbContext>(options =>
+builder.Services.AddDbContext<ContextDB>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("KonekcijaSaBazomVebProjekat"));
 });
