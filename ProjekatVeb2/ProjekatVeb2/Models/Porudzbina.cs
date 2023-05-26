@@ -6,17 +6,16 @@ namespace ProjekatVeb2.Models
     {
         public int Id { get; set; }
        
-        public Artikal Artikal { get; set; }
         public List<PoruzdbinaArtikal> PoruceniArtikli { get; set; }
-        public string Kolicina { get; set; }
-        public string AdresaDostave { get; set; }
-        public DateTime VrijemeDostave { get; set; }
-        public DateTime VrijemePorudzbine { get; set; }
+      
+        public string Adresa { get; set; }
         public string Komentar { get; set; }
-        public float UkupnaCijena { get; set; }
-        public float CijenaDostave { get; } = 200;       
-        public StatusPorudzbine Status { get; set; }
-        public Kupac Kupac { get; set; }
-        public string KupacID { get; set; }
+        public double Cijena { get; set; }
+        public Verifikacija VerifikacijaPorudzbine { get; set; }
+        public DateTime VrijemePorucivanja { get; set; }
+        public DateTime VrijemeDostave { get; set; }
+        public Korisnik Korisnik { get; set; }
+        public int IdKorisnik { get; set; }
+        public double CijenaDostave { get; } = 300;
     }
 }

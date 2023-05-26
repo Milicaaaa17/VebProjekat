@@ -3,11 +3,11 @@
     public class PoruzdbinaArtikal
     {
         public Porudzbina Porudzbina { get; set; }
-        public string IdPorudzbina { get; set; }
+        public int IdPorudzbina { get; set; }
         public Artikal Artikal { get; set; }
-        public string ArtikalID { get; set; }
+        public int ArtikalID { get; set; }
         public int Kolicina { get; set; }
-        public int Cijena { get; set; }
+       
 
     }
 }

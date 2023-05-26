@@ -10,11 +10,12 @@ namespace ProjekatVeb2.Configuration
         {
             builder.HasKey(p => p.Id);
             builder.Property(p => p.Id).ValueGeneratedOnAdd();
+            builder.Property(p => p.Naziv).IsRequired().HasMaxLength(50);
             builder.Property(p => p.Kolicina).IsRequired();
             builder.Property(p => p.Cijena).IsRequired();
-            builder.Property(p => p.Naziv).IsRequired();
+           
 
-            builder.HasOne(p => p.Prodavac).WithMany(p => p.Artikli).HasForeignKey(p => p.ProdavacID).IsRequired().OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(p => p.Korisnik).WithMany(p => p.Artikili).HasForeignKey(p => p.IdKorisnik).IsRequired().OnDelete(DeleteBehavior.Restrict);
 
 
         }

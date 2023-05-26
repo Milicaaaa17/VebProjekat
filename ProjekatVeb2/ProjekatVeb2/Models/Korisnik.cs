@@ -4,9 +4,9 @@ namespace ProjekatVeb2.Models
 {
     public class Korisnik
     {
-        public int Id { get; set; }
-   
-        public string KorisnickoIme { get; set; } //kljuc
+       
+        public int IdK { get; set; }
+        public string KorisnickoIme { get; set; } 
     
         public string Email { get; set; }
       
@@ -16,8 +16,12 @@ namespace ProjekatVeb2.Models
 
         public DateTime DatumRodjenja { get; set; }
         public string Adresa { get; set; }
+        public TipKorisnika Tip { get; set; }
+        public Verifikacija VerifikacijaKorisnika { get; set; }
+        public byte[] Slika { get; set; }
+        public List<Artikal> Artikili { get; set; }
+        public List<Porudzbina> Porudzbine { get; set; }
         
-        public string Slika { get; set; }
         
 
 

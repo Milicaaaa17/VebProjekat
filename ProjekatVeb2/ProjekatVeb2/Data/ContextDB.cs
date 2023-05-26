@@ -10,11 +10,10 @@ namespace ProjekatVeb2.Data
         {
            
         }
-        public DbSet<Kupac> Kupci { get; set; }
-        public DbSet<Prodavac> Prodavci { get; set; }
-        public DbSet<Administrator> Administratori { get; set; }
-        public DbSet<Kupac> Artikli { get; set; }
-        public DbSet<Kupac> Porudzbine { get; set; }
+        
+        public DbSet<Korisnik> Korisnici { get; set; }   
+        public DbSet<Artikal> Artikli { get; set; }
+        public DbSet<Porudzbina> Porudzbine { get; set; }
         public DbSet<PoruzdbinaArtikal> PoruzdbinaArtikli { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
