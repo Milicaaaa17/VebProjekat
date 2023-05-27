@@ -18,7 +18,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IKorisnikRepository, KorisnikRepository>();
 builder.Services.AddScoped<IServiceKorisnik, ServiceKorisnik>();
+builder.Services.AddScoped<IServiceAutentifikacija, ServiceAutentifikacija>();
+
 builder.Services.AddScoped<IEmailService, ServiceEmail>();
+;
+
 
 builder.Services.AddDbContext<ContextDB>(options =>
 {
