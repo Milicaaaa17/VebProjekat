@@ -1,8 +1,10 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProjekatVeb2.Data;
+using ProjekatVeb2.DTO;
 using ProjekatVeb2.Interfaces;
 using ProjekatVeb2.Mapper;
+using ProjekatVeb2.Models;
 using ProjekatVeb2.Repository;
 using ProjekatVeb2.Services;
 
@@ -18,7 +20,6 @@ builder.Services.AddScoped<IKorisnikRepository, KorisnikRepository>();
 builder.Services.AddScoped<IServiceKorisnik, ServiceKorisnik>();
 builder.Services.AddScoped<IEmailService, ServiceEmail>();
 
-
 builder.Services.AddDbContext<ContextDB>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("KonekcijaSaBazomVebProjekat"));
@@ -27,10 +28,12 @@ builder.Services.AddDbContext<ContextDB>(options =>
 var mapperConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new MapDTO());
+    mc.CreateMap<RegistracijaDTO, Korisnik>();
 });
 
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,9 +44,22 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
 
+app.UseCors(builder =>
+{
+    builder.AllowAnyOrigin()
+           .AllowAnyMethod()
+           .AllowAnyHeader();
+});
+
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.Run();

@@ -6,6 +6,7 @@ using System.Data;
 
 namespace ProjekatVeb2.Controllers
 {
+    [Route("api/[controller]")]
     public class KorisnikController : ControllerBase
     {
         private readonly IServiceKorisnik korisnikServis;
@@ -57,7 +58,7 @@ namespace ProjekatVeb2.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> Put([FromQuery] int id, [FromBody] UpdateKorisnikaDTO DtoK)
         {
@@ -79,6 +80,7 @@ namespace ProjekatVeb2.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody] RegistracijaDTO DtoReg)
         {
             try
@@ -97,6 +99,8 @@ namespace ProjekatVeb2.Controllers
                 return StatusCode(500, $"Interna server greška: {ex.Message}");
             }
         }
+        
+
     }
 
 }

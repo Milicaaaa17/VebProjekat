@@ -18,7 +18,7 @@ namespace ProjekatVeb2.Models
         public string Adresa { get; set; }
         public TipKorisnika Tip { get; set; }
         public Verifikacija VerifikacijaKorisnika { get; set; }
-        public byte[] Slika { get; set; }
+        public byte[]? Slika { get; set; }
         public List<Artikal> Artikili { get; set; }
         public List<Porudzbina> Porudzbine { get; set; }
         

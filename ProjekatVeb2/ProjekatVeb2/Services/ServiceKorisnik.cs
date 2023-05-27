@@ -99,6 +99,7 @@ namespace ProjekatVeb2.Services
 
             Korisnik noviKorisnik = mapper.Map<RegistracijaDTO, Korisnik>(DtoReg);
             noviKorisnik.Slika = Encoding.ASCII.GetBytes(DtoReg.Slika);
+
             noviKorisnik.Lozinka = BCrypt.Net.BCrypt.HashPassword(noviKorisnik.Lozinka);
 
             if (noviKorisnik.Tip == Models.TipKorisnika.Prodavac)
@@ -169,7 +170,7 @@ namespace ProjekatVeb2.Services
                 KorisnickoIme = updatedKorisnik.KorisnickoIme,
                 Email = updatedKorisnik.Email,
                 Adresa = updatedKorisnik.Adresa,
-                Slika = Encoding.Default.GetString(updatedKorisnik.Slika)
+                //Slika = Encoding.Default.GetString(updatedKorisnik.Slika)
             };
 
             return dtoK;

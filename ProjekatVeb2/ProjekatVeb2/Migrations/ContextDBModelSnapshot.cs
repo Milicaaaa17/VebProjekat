@@ -22,69 +22,34 @@ namespace ProjekatVeb2.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ProjekatVeb2.Models.Administrator", b =>
-                {
-                    b.Property<string>("KorisnickoIme")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Adresa")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DatumRodjenja")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImePrezime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Lozinka")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Slika")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("KorisnickoIme");
-
-                    b.HasIndex("KorisnickoIme")
-                        .IsUnique();
-
-                    b.ToTable("Administratori");
-                });
-
             modelBuilder.Entity("ProjekatVeb2.Models.Artikal", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<double>("Cijena")
                         .HasColumnType("float");
+
+                    b.Property<int>("IdKorisnik")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Izbrisan")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Kolicina")
                         .HasColumnType("int");
 
                     b.Property<string>("Naziv")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Opis")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProdavacID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<byte[]>("Slika")
                         .IsRequired()
@@ -92,19 +57,23 @@ namespace ProjekatVeb2.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProdavacID");
+                    b.HasIndex("IdKorisnik");
 
-                    b.ToTable("Artikal");
+                    b.ToTable("Artikli");
                 });
 
-            modelBuilder.Entity("ProjekatVeb2.Models.Kupac", b =>
+            modelBuilder.Entity("ProjekatVeb2.Models.Korisnik", b =>
                 {
-                    b.Property<string>("KorisnickoIme")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("IdK")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdK"));
 
                     b.Property<string>("Adresa")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("DatumRodjenja")
                         .HasColumnType("datetime2");
@@ -113,31 +82,34 @@ namespace ProjekatVeb2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<string>("ImePrezime")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("KorisnickoIme")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Lozinka")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Slika")
+                    b.Property<byte[]>("Slika")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Tip")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StatusPorudzbine")
-                        .HasColumnType("int");
+                    b.Property<string>("VerifikacijaKorisnika")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("KorisnickoIme");
+                    b.HasKey("IdK");
 
-                    b.HasIndex("KorisnickoIme")
-                        .IsUnique();
-
-                    b.ToTable("Kupac");
+                    b.ToTable("Korisnici");
                 });
 
             modelBuilder.Entity("ProjekatVeb2.Models.Porudzbina", b =>
@@ -148,170 +120,75 @@ namespace ProjekatVeb2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AdresaDostave")
+                    b.Property<string>("Adresa")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("ArtikalId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<double>("Cijena")
+                        .HasColumnType("float");
 
-                    b.Property<string>("Kolicina")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("IdKorisnik")
+                        .HasColumnType("int");
 
                     b.Property<string>("Komentar")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("KupacID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProdavacKorisnickoIme")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Status")
+                    b.Property<int>("VerifikacijaPorudzbine")
                         .HasColumnType("int");
-
-                    b.Property<float>("UkupnaCijena")
-                        .HasColumnType("real");
 
                     b.Property<DateTime>("VrijemeDostave")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("VrijemePorudzbine")
+                    b.Property<DateTime>("VrijemePorucivanja")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArtikalId");
+                    b.HasIndex("IdKorisnik");
 
-                    b.HasIndex("KupacID");
-
-                    b.HasIndex("ProdavacKorisnickoIme");
-
-                    b.ToTable("Porudzbina");
+                    b.ToTable("Porudzbine");
                 });
 
             modelBuilder.Entity("ProjekatVeb2.Models.PoruzdbinaArtikal", b =>
                 {
-                    b.Property<string>("IdPorudzbina")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("IdPorudzbina")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ArtikalID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Cijena")
+                    b.Property<int>("ArtikalID")
                         .HasColumnType("int");
 
                     b.Property<int>("Kolicina")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PorudzbinaId")
                         .HasColumnType("int");
 
                     b.HasKey("IdPorudzbina", "ArtikalID");
 
                     b.HasIndex("ArtikalID");
 
-                    b.HasIndex("PorudzbinaId");
-
                     b.ToTable("PoruzdbinaArtikli");
-                });
-
-            modelBuilder.Entity("ProjekatVeb2.Models.Prodavac", b =>
-                {
-                    b.Property<string>("KorisnickoIme")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AdministratorKorisnickoIme")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Adresa")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DatumRodjenja")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImePrezime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Lozinka")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Slika")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StatusPorudzbine")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Verifikovan")
-                        .HasColumnType("int");
-
-                    b.HasKey("KorisnickoIme");
-
-                    b.HasIndex("AdministratorKorisnickoIme");
-
-                    b.HasIndex("KorisnickoIme")
-                        .IsUnique();
-
-                    b.ToTable("Prodavci");
                 });
 
             modelBuilder.Entity("ProjekatVeb2.Models.Artikal", b =>
                 {
-                    b.HasOne("ProjekatVeb2.Models.Prodavac", "Prodavac")
-                        .WithMany("Artikli")
-                        .HasForeignKey("ProdavacID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("ProjekatVeb2.Models.Korisnik", "Korisnik")
+                        .WithMany("Artikili")
+                        .HasForeignKey("IdKorisnik")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Prodavac");
-                });
-
-            modelBuilder.Entity("ProjekatVeb2.Models.Kupac", b =>
-                {
-                    b.HasOne("ProjekatVeb2.Models.Administrator", "Administrator")
-                        .WithMany("Kupci")
-                        .HasForeignKey("KorisnickoIme")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Administrator");
+                    b.Navigation("Korisnik");
                 });
 
             modelBuilder.Entity("ProjekatVeb2.Models.Porudzbina", b =>
                 {
-                    b.HasOne("ProjekatVeb2.Models.Artikal", "Artikal")
-                        .WithMany()
-                        .HasForeignKey("ArtikalId");
-
-                    b.HasOne("ProjekatVeb2.Models.Kupac", "Kupac")
-                        .WithMany("Porudzbina")
-                        .HasForeignKey("KupacID")
-                        .OnDelete(DeleteBehavior.NoAction)
+                    b.HasOne("ProjekatVeb2.Models.Korisnik", "Korisnik")
+                        .WithMany("Porudzbine")
+                        .HasForeignKey("IdKorisnik")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("ProjekatVeb2.Models.Prodavac", null)
-                        .WithMany("Poruzbine")
-                        .HasForeignKey("ProdavacKorisnickoIme");
-
-                    b.Navigation("Artikal");
-
-                    b.Navigation("Kupac");
+                    b.Navigation("Korisnik");
                 });
 
             modelBuilder.Entity("ProjekatVeb2.Models.PoruzdbinaArtikal", b =>
@@ -319,13 +196,13 @@ namespace ProjekatVeb2.Migrations
                     b.HasOne("ProjekatVeb2.Models.Artikal", "Artikal")
                         .WithMany("PoruceniArtikli")
                         .HasForeignKey("ArtikalID")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ProjekatVeb2.Models.Porudzbina", "Porudzbina")
                         .WithMany("PoruceniArtikli")
-                        .HasForeignKey("PorudzbinaId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasForeignKey("IdPorudzbina")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Artikal");
@@ -333,44 +210,21 @@ namespace ProjekatVeb2.Migrations
                     b.Navigation("Porudzbina");
                 });
 
-            modelBuilder.Entity("ProjekatVeb2.Models.Prodavac", b =>
-                {
-                    b.HasOne("ProjekatVeb2.Models.Administrator", "Administrator")
-                        .WithMany("Prodavci")
-                        .HasForeignKey("AdministratorKorisnickoIme")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Administrator");
-                });
-
-            modelBuilder.Entity("ProjekatVeb2.Models.Administrator", b =>
-                {
-                    b.Navigation("Kupci");
-
-                    b.Navigation("Prodavci");
-                });
-
             modelBuilder.Entity("ProjekatVeb2.Models.Artikal", b =>
                 {
                     b.Navigation("PoruceniArtikli");
                 });
 
-            modelBuilder.Entity("ProjekatVeb2.Models.Kupac", b =>
+            modelBuilder.Entity("ProjekatVeb2.Models.Korisnik", b =>
                 {
-                    b.Navigation("Porudzbina");
+                    b.Navigation("Artikili");
+
+                    b.Navigation("Porudzbine");
                 });
 
             modelBuilder.Entity("ProjekatVeb2.Models.Porudzbina", b =>
                 {
                     b.Navigation("PoruceniArtikli");
-                });
-
-            modelBuilder.Entity("ProjekatVeb2.Models.Prodavac", b =>
-                {
-                    b.Navigation("Artikli");
-
-                    b.Navigation("Poruzbine");
                 });
 #pragma warning restore 612, 618
         }
