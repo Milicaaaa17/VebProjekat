@@ -2,8 +2,10 @@
 {
     public enum StatusPorudzbine
     {
-        CekaSe,
-        DostavljaSe,
-        Dostavljeno
+        UObradi,
+        Odobrena,
+        Odbijena,
+        Isporucena,
+        Otkazana
     }
 }

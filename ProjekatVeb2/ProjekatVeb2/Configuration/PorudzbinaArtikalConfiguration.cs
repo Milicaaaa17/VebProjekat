@@ -10,9 +10,18 @@ namespace ProjekatVeb2.Configuration
         {
             builder.HasKey(pa => new { pa.IdPorudzbina, pa.ArtikalID });
 
-            builder.HasOne(pa => pa.Porudzbina).WithMany(pa => pa.PoruceniArtikli).HasForeignKey(pa =>pa.IdPorudzbina).IsRequired().OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(pa => pa.Artikal).WithMany(pa => pa.PoruceniArtikli).HasForeignKey(pa => pa.ArtikalID).IsRequired().OnDelete(DeleteBehavior.Restrict);
-                
+            builder.HasOne(pa => pa.Artikal)
+                .WithMany(a => a.PoruceniArtikli)
+                .HasForeignKey(pa => pa.ArtikalID)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(pa => pa.Porudzbina)
+                .WithMany(p => p.PorudzbinaArtikal)
+                .HasForeignKey(pa => pa.IdPorudzbina)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
+    
 }

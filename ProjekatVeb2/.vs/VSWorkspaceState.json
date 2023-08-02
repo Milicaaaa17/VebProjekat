@@ -3,8 +3,8 @@
     "",
     "\\ProjekatVeb2",
     "\\ProjekatVeb2\\Controllers",
-    "\\ProjekatVeb2\\Mapper",
-    "\\ProjekatVeb2\\Models"
+    "\\ProjekatVeb2\\DTO",
+    "\\ProjekatVeb2\\Mapper"
   ],
   "SelectedNode": "\\ProjekatVeb2.sln",
   "PreviewInSolutionExplorer": false

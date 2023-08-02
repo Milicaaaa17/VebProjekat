@@ -4,18 +4,23 @@ namespace ProjekatVeb2.Models
 {
     public class Porudzbina
     {
-        public int Id { get; set; }
-       
-        public List<PoruzdbinaArtikal> PoruceniArtikli { get; set; }
-      
-        public string Adresa { get; set; }
+        public int IdPorudzbine { get; set; }
+        public int UkupnaCijena { get; set; }
         public string Komentar { get; set; }
-        public double Cijena { get; set; }
-        public Verifikacija VerifikacijaPorudzbine { get; set; }
-        public DateTime VrijemePorucivanja { get; set; }
+        public string AdresaDostave { get; set; }
+        public DateTime DatumPorudzbine { get; set; }
         public DateTime VrijemeDostave { get; set; }
+       
+        public List<PoruzdbinaArtikal> PorudzbinaArtikal { get; set; }
         public Korisnik Korisnik { get; set; }
-        public int IdKorisnik { get; set; }
-        public double CijenaDostave { get; } = 300;
+        public int KorisnikId { get; set; }
+        public StatusPorudzbine Status { get; set; }
+        public int CijenaDostave { get; set; }
+
+
+        public Porudzbina()
+        {
+            PorudzbinaArtikal = new List<PoruzdbinaArtikal>();
+        }
     }
 }

@@ -8,16 +8,23 @@ namespace ProjekatVeb2.Configuration
     {
         public void Configure(EntityTypeBuilder<Artikal> builder)
         {
-            builder.HasKey(p => p.Id);
-            builder.Property(p => p.Id).ValueGeneratedOnAdd();
-            builder.Property(p => p.Naziv).IsRequired().HasMaxLength(50);
-            builder.Property(p => p.Kolicina).IsRequired();
-            builder.Property(p => p.Cijena).IsRequired();
-           
+            builder.HasKey(a => a.IdArtikla);
+            builder.Property(a => a.IdArtikla).ValueGeneratedOnAdd();
+            builder.Property(a => a.Naziv).IsRequired();
+            builder.Property(a => a.Cijena).IsRequired();
+            builder.Property(a => a.Kolicina).IsRequired();
+            builder.Property(a => a.Opis);
+            builder.Property(a => a.Slika);
 
-            builder.HasOne(p => p.Korisnik).WithMany(p => p.Artikili).HasForeignKey(p => p.IdKorisnik).IsRequired().OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(p => p.Korisnik)
+                .WithMany(k => k.Artikili)
+                .HasForeignKey(p => p.KorisnikId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-
+            builder.HasMany(a => a.PoruceniArtikli)
+            .WithOne(pa => pa.Artikal)
+            .HasForeignKey(pa => pa.ArtikalID)
+            .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

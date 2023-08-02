@@ -44,9 +44,29 @@
               "target": "Package",
               "version": "[12.0.1, )"
             },
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
             "BCrypt.Net": {
               "target": "Package",
               "version": "[0.1.0, )"
+            },
+            "Cqrs": {
+              "target": "Package",
+              "version": "[4.4.1.24, )"
+            },
+            "IKVM": {
+              "target": "Package",
+              "version": "[8.6.2, )"
+            },
+            "JWT": {
+              "target": "Package",
+              "version": "[10.0.2, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.0, )"
             },
             "Microsoft.AspNetCore.Cors": {
               "target": "Package",
@@ -69,6 +89,10 @@
             "Portable.BouncyCastle": {
               "target": "Package",
               "version": "[1.9.0, )"
+            },
+            "SolrNet": {
+              "target": "Package",
+              "version": "[1.1.1, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

@@ -1,157 +1,112 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjekatVeb2.Data;
-using ProjekatVeb2.Interfaces;
+using ProjekatVeb2.Interfaces.IRepoistory;
+using ProjekatVeb2.Interfaces.IServices;
 using ProjekatVeb2.Models;
 
 namespace ProjekatVeb2.Repository
 {
     public class KorisnikRepository : IKorisnikRepository
     {
-        private readonly ContextDB context;
+        private readonly ContextDB _contextDB;
+        private readonly IEnkripcijaService _enkripcijaService;
 
-        public KorisnikRepository(ContextDB _context)
+        public KorisnikRepository(ContextDB contextDB, IEnkripcijaService enkripcijaService)
         {
-            context = _context;
+            _contextDB = contextDB;
+            _enkripcijaService = enkripcijaService;
         }
 
-        public async Task<Korisnik> GetById(int id)
+        public async Task AzurirajKorisnika(Korisnik korisnik)
         {
-            try
-            {
-               
-                var query = context.Korisnici.Include(k => k.Porudzbine).Where(p => p.IdK == id);
-                Korisnik korisnik = await query.FirstOrDefaultAsync();
-
-                return korisnik;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+            _contextDB.Update(korisnik);
+            await _contextDB.SaveChangesAsync();
         }
 
-        public async Task<List<Korisnik>> GetSviKorisnici()
+        public async Task BrisanjeKorisnikaNaOsnovuId(int id)
         {
-            try
+            var korisnik = await _contextDB.Korisnici.FirstOrDefaultAsync(k => k.IdKorisnika == id);
+            if (korisnik != null)
             {
-               
-                var query = context.Korisnici.Include(p => p.Porudzbine);
-                List<Korisnik> korisnici = await query.ToListAsync();
+                _contextDB.Korisnici.Remove(korisnik);
+                await _contextDB.SaveChangesAsync();
 
-                return korisnici;
             }
-            catch (Exception e)
-            {
-              
-                return null;
-            }
+
         }
 
-
-        public async Task<List<Korisnik>> GetSviProdavci()
+        public async Task<List<Korisnik>> DobaviKorisnike()
         {
-            try
-            {
-               
-                var query = context.Korisnici.Include(a => a.Artikili).Where(tk => tk.Tip == TipKorisnika.Prodavac);
-                List<Korisnik> prodavci = await query.ToListAsync();
-
-                return prodavci;
-            }
-            catch (Exception e)
-            {
-               
-                return null;
-            }
+            return await _contextDB.Korisnici.ToListAsync();
         }
 
-
-        public async Task<Korisnik> OdbijVerifikaciju(int id)
+        public async Task DodajKorisnika(Korisnik korisnik)
         {
-            try
+            if (korisnik == null)
             {
-                var query = await context.Korisnici.FindAsync(id);
+                throw new ArgumentNullException(nameof(korisnik), "Korisnik ne može biti null.");
 
-                if (query == null)
-                {
-                    return null; // Korisnik nije pronađen
-                }
-
-                query.VerifikacijaKorisnika = Verifikacija.Odbijen;
-
-                await context.SaveChangesAsync();
-                return query;
             }
-            catch (Exception e)
+            if (korisnik.Tip == TipKorisnika.Administrator)
             {
-                return null;
+                korisnik.VerifikacijaKorisnika = StatusVerifikacije.Odobren;
+                korisnik.Verifikovan = true;
+
             }
+            else if (korisnik.Tip == TipKorisnika.Kupac)
+            {
+                korisnik.VerifikacijaKorisnika = StatusVerifikacije.Odobren;
+                korisnik.Verifikovan = true;
+            }
+            else
+            {
+                korisnik.VerifikacijaKorisnika = StatusVerifikacije.UObradi;
+            }
+            _contextDB.Korisnici.Add(korisnik);
+            await _contextDB.SaveChangesAsync();
         }
 
-
-        public async Task<Korisnik> Registracija(Korisnik korisnik)
+        public async Task<Korisnik> KorisnikNaOsnovuEmail(string email)
         {
-            try
-            {
-                var query = context.Korisnici.Add(korisnik);
-                await context.SaveChangesAsync();
-                return query.Entity;
-            }
-            catch (Exception e)
-            {
-                 return null;
-            }
+            return await _contextDB.Korisnici.FirstOrDefaultAsync(k => k.Email == email);
         }
 
-        public async Task<Korisnik> UpdateKorisnik(Korisnik noviKorisnik)
+        public async Task<Korisnik> KorisnikNaOsnovuId(int id)
         {
-            try
-            {
-                var query = context.Korisnici.Find(noviKorisnik.IdK);
+            return await _contextDB.Korisnici.FirstOrDefaultAsync(k => k.IdKorisnika == id);
+        }
 
-                if (query == null)
-                {
-                    return null; // Korisnik nije pronađen
-                }
+        public async Task<bool> ProvjeriDostupnostKorisnickogImena(string korisnickoIme)
+        {
+            bool dostupno = await _contextDB.Korisnici.AnyAsync(k => k.KorisnickoIme == korisnickoIme);
+            return dostupno;
+        }
 
-                query.ImePrezime = noviKorisnik.ImePrezime;
-                query.Email = noviKorisnik.Email;
-                query.Lozinka = noviKorisnik.Lozinka;
-                query.Adresa = noviKorisnik.Adresa;
-                query.DatumRodjenja = noviKorisnik.DatumRodjenja;
-                //  ostala polja koja treba ažurirati
-
-                await context.SaveChangesAsync();
-                return query;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+        public async Task<bool> ProvjeriZauzetostEmail(string email)
+        {
+            bool zauzet = await _contextDB.Korisnici.AnyAsync(k => k.Email == email);
+            return !zauzet;
         }
 
 
-        public async Task<Korisnik> Verifikuj(int id)
+        public async Task<bool> ProvjeriIspravnostEmail(string email)
         {
-            try
-            {
-                var query = await context.Korisnici.FindAsync(id);
-
-                if (query == null)
-                {
-                    return null; // Korisnik nije pronađen
-                }
-
-                query.VerifikacijaKorisnika = Verifikacija.Odobren;
-
-                await context.SaveChangesAsync();
-                return query;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+            bool ispravanEmail = await _contextDB.Korisnici.AnyAsync(k => k.Email == email);
+            return ispravanEmail;
         }
 
+        public async Task<bool> ProvjeriIspravnostLozinke(string lozinka)
+        {
+            // string lozinka1 = _enkripcijaService.EnkriptujLozinku(lozinka);
+            bool ispravnaLozinka = await _contextDB.Korisnici.AnyAsync(k => k.Lozinka == lozinka);
+            return ispravnaLozinka;
+        }
+
+
+
+        public async Task<IEnumerable<Korisnik>> SviKorisnici()
+        {
+            return await _contextDB.Korisnici.ToListAsync();
+        }
     }
 }

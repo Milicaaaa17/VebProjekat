@@ -9,16 +9,20 @@ namespace ProjekatVeb2.Configuration
     {
         public void Configure(EntityTypeBuilder<Korisnik> builder)
         {
-            builder.HasKey(k => k.IdK);
-            builder.Property(k => k.IdK).ValueGeneratedOnAdd();
+            builder.HasKey(k => k.IdKorisnika);
+            builder.Property(k => k.IdKorisnika).ValueGeneratedOnAdd();
             builder.Property(k => k.KorisnickoIme).IsRequired();
-            builder.Property(k => k.ImePrezime).IsRequired().HasMaxLength(50);
-            builder.Property(k => k.Email).IsRequired();
-            builder.Property(k => k.DatumRodjenja).IsRequired();
-            builder.Property(k => k.Lozinka).IsRequired();
-            builder.Property(k => k.Adresa).IsRequired().HasMaxLength(50);
+            builder.HasIndex(k => k.KorisnickoIme).IsUnique();
             builder.Property(k => k.Tip).HasConversion(new EnumToStringConverter<TipKorisnika>());
-            builder.Property(k => k.VerifikacijaKorisnika).HasConversion(new EnumToStringConverter<Verifikacija>());
+            builder.Property(k => k.VerifikacijaKorisnika).HasConversion(new EnumToStringConverter<StatusVerifikacije>());
+
+            builder.HasMany(k => k.Porudzbine)
+           .WithOne(p => p.Korisnik)
+           .HasForeignKey(p => p.KorisnikId);
+
+            builder.HasMany(k => k.Artikili)
+           .WithOne(a => a.Korisnik)
+           .HasForeignKey(a => a.KorisnikId);
         }
     }
 }

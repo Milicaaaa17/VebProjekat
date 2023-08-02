@@ -1,106 +1,72 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjekatVeb2.DTO;
-using ProjekatVeb2.Interfaces;
-using System.Data;
+using ProjekatVeb2.Interfaces.IServices;
 
 namespace ProjekatVeb2.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
+
     public class KorisnikController : ControllerBase
     {
-        private readonly IServiceKorisnik korisnikServis;
+        private readonly IKorisnikService _korisnikService;
+        private readonly IMapper _mapper;
 
-        public KorisnikController(IServiceKorisnik kServis)
+        public KorisnikController(IKorisnikService korisnikService, IMapper mapper)
         {
-            korisnikServis = kServis;
+            _korisnikService = korisnikService;        
+            _mapper = mapper;
         }
 
-        [HttpGet("GetSviKorisnici")]
-        [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> GetSvi_Korisnici()
-        {
-            try
-            {
-                List<KorisnikDTO> korisnici = await korisnikServis.GetSviKorisnici();
+        [HttpDelete("{id}")]
 
-                if (korisnici.Count == 0)
-                {
-                    return NotFound();
-                }
-
-                return Ok(korisnici);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Interna server greška: {ex.Message}");
-            }
-        }
-
-        [HttpGet("GetSviProdavci")]
-        [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> GetSvi_Prodavci()
-        {
-            try
-            {
-                List<KorisnikDTO> prodavci = await korisnikServis.GetSviProdavci();
-
-                if (prodavci.Any())
-                {
-                    return Ok(prodavci);
-                }
-
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Interna server greška: {ex.Message}");
-            }
-        }
-
-        [HttpPut("{id}")]
-        [Authorize]
-        public async Task<IActionResult> Put([FromQuery] int id, [FromBody] UpdateKorisnikaDTO DtoK)
-        {
-            try
-            {
-                KorisnikDTO korisnik = await korisnikServis.UpdateKorisnik(id, DtoK);
-
-                if (korisnik != null)
-                {
-                    return Ok(korisnik);
-                }
-
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Interna server greška: {ex.Message}");
-            }
-        }
-
-        [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Post([FromBody] RegistracijaDTO DtoReg)
+        public async Task<IActionResult> BrisanjeKorisnika(int id)
         {
-            try
-            {
-                KorisnikDTO korisnik = await korisnikServis.Registracija(DtoReg);
 
-                if (korisnik != null)
-                {
-                    return Ok(korisnik);
-                }
-
-                return BadRequest();
-            }
-            catch (Exception ex)
+            var uspjesno = await _korisnikService.BrisanjeKorisnikaNaOsnovuId(id);
+            if (uspjesno)
             {
-                return StatusCode(500, $"Interna server greška: {ex.Message}");
+                return Ok("Uspjesno obrisan korisnik");
             }
+            return NotFound("Nije pronadjen");
+
         }
-        
+
+        [HttpGet("{id}")]
+
+        [AllowAnonymous]
+        public async Task<IActionResult> PronadjiKorisnikaSaId(int id)
+        {
+            var korisnik = await _korisnikService.KorisnikNaOsnovuId(id);
+            if (korisnik != null)
+            {
+                return Ok(korisnik);
+            }
+            else
+            {
+                return NotFound("Nije pronadjen");
+            }
+
+        }
+
+
+       
+        [HttpGet("{id}/profil")]
+        [Authorize]
+        public async Task<IActionResult> DobaviProfilKorisnika(int id)
+        {
+            var korisnik = await _korisnikService.KorisnikNaOsnovuId(id);
+            if (korisnik != null)
+            {
+
+                var korisnikDto = _mapper.Map<KorisnikDTO>(korisnik);
+                return Ok(korisnikDto);
+            }
+            return NotFound("Nije pronadjen");
+        }
 
     }
-
 }
