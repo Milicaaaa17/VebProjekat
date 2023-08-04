@@ -14,9 +14,18 @@ namespace ProjekatVeb2.Services
             _korisnikRepository = korisnikRepository;
         }
 
-        public async Task AdminOdbijaRegistraciju(int id)
+        public async Task<bool> AdminOdbijaRegistraciju(int id)
         {
-            await _korisnikRepository.BrisanjeKorisnikaNaOsnovuId(id);
+            var korisnik = await _korisnikRepository.KorisnikNaOsnovuId(id);
+            if (korisnik != null && !korisnik.Verifikovan)
+            {
+                await _korisnikRepository.BrisanjeKorisnikaNaOsnovuId(id);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public async Task<bool> AdminOdobravaRegistraciju(int id)
@@ -37,6 +46,21 @@ namespace ProjekatVeb2.Services
         public async Task<IEnumerable<Korisnik>> DohvatiRegistracijeZaOdobrenje()
         {
             return await _korisnikRepository.KorisniciCekajuOdobrenje(false);
+        }
+
+        public Task OdbijVerifikacijuProdavca(int prodavacId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Korisnik>> SviProdavciKojiCekajuVerifikaciju()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task VerifikujProdavca(int prodavacId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

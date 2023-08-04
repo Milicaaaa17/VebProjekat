@@ -6,8 +6,12 @@ namespace ProjekatVeb2.Interfaces.IServices
     {
         Task<IEnumerable<Korisnik>> DohvatiRegistracijeZaOdobrenje();
         Task<bool> AdminOdobravaRegistraciju(int id);
-        Task AdminOdbijaRegistraciju(int id);
+        Task<bool> AdminOdbijaRegistraciju(int id);
 
-       
+        
+
+        Task<IEnumerable<Korisnik>> SviProdavciKojiCekajuVerifikaciju();
+        Task VerifikujProdavca(int prodavacId);
+        Task OdbijVerifikacijuProdavca(int prodavacId);
     }
 }

@@ -20,23 +20,29 @@ namespace ProjekatVeb2.Controllers
             var korisnici = await _adminService.DohvatiRegistracijeZaOdobrenje();
             return Ok(korisnici);
         }
-
         [HttpPost("registracije/{id}/odobri")]
         public async Task<IActionResult> OdobriRegistraciju(int id)
         {
             var uspjesno = await _adminService.AdminOdobravaRegistraciju(id);
             if (uspjesno)
             {
-                return Ok();
+               
+                return Ok("Registracija uspjesno odobrena");
             }
-            return NotFound();
+           
+            return NotFound("Nije pronadjena");
         }
 
         [HttpPost("registracije/{id}/odbij")]
         public async Task<IActionResult> OdbijRegistraciju(int id)
         {
-            await _adminService.AdminOdbijaRegistraciju(id);
-            return Ok();
+            
+            var uspjesno = await _adminService.AdminOdbijaRegistraciju(id);
+            if (uspjesno)
+            {
+                return Ok("Registracija odbijena");
+            }
+            return NotFound("Nije pronadjena");
         }
     }
 }
