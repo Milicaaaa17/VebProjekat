@@ -7,5 +7,7 @@ namespace ProjekatVeb2.Interfaces.IServices
         Task<Korisnik> KorisnikNaOsnovuId(int id);
        // Task AzurirajKorisnika(IzmjenaProfilaDto izmjenaProfilaDto);
         Task<bool> BrisanjeKorisnikaNaOsnovuId(int id);
+
+      
     }
 }

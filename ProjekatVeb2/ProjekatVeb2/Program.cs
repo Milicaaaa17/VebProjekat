@@ -33,6 +33,7 @@ builder.Services.AddDbContext<ContextDB>(options =>
 builder.Services.AddScoped<IKorisnikRepository, KorisnikRepository>();
 
 // Dodajte vaše servise
+builder.Services.AddScoped<IKorisnikRepository, KorisnikRepository>();
 
 builder.Services.AddScoped<IKorisnikService, KorisnikService>();
 builder.Services.AddScoped<IEnkripcijaService, EnkripcijaService>();
@@ -40,6 +41,8 @@ builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSet
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<IRegistracijaService, RegistracijaService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IAdministratorService, AdministratorService>();
+
 
 
 
@@ -58,6 +61,8 @@ var mapperConfig = new MapperConfiguration(cfg =>
     cfg.CreateMap<Korisnik, RegistracijaDTO>().ReverseMap();
     cfg.CreateMap<Korisnik, Registrovanje>().ReverseMap();
     cfg.CreateMap<Korisnik, KorisnikDTO>().ReverseMap();
+    cfg.CreateMap<Artikal, ArtikalDTO>().ReverseMap();
+    cfg.CreateMap<Artikal, KreirajArtikalDTO>().ReverseMap();
 
     //za sliku 
     cfg.CreateMap<IFormFile, byte[]>().ConvertUsing((file, _, context) =>

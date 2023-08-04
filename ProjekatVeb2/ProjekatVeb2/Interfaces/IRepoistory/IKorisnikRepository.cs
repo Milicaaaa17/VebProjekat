@@ -19,6 +19,9 @@ namespace ProjekatVeb2.Interfaces.IRepoistory
         Task<Korisnik> KorisnikNaOsnovuId(int id); 
         Task<Korisnik> KorisnikNaOsnovuEmail(string email); 
         Task AzurirajKorisnika(Korisnik korisnik); 
-        Task BrisanjeKorisnikaNaOsnovuId(int id); 
+        Task BrisanjeKorisnikaNaOsnovuId(int id);
+
+        //
+        Task<IEnumerable<Korisnik>> KorisniciCekajuOdobrenje(bool odobren);
     }
 }

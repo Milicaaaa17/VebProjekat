@@ -33,6 +33,8 @@ namespace ProjekatVeb2.Services
 
         }
 
+       
+
         public async Task<Korisnik> KorisnikNaOsnovuId(int id)
         {
             return await _korisnikRepository.KorisnikNaOsnovuId(id);

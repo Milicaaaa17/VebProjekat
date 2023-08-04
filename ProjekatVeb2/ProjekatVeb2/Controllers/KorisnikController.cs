@@ -55,7 +55,7 @@ namespace ProjekatVeb2.Controllers
 
        
         [HttpGet("{id}/profil")]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> DobaviProfilKorisnika(int id)
         {
             var korisnik = await _korisnikService.KorisnikNaOsnovuId(id);

@@ -108,5 +108,10 @@ namespace ProjekatVeb2.Repository
         {
             return await _contextDB.Korisnici.ToListAsync();
         }
+
+        public async Task<IEnumerable<Korisnik>> KorisniciCekajuOdobrenje(bool odobren)
+        {
+            return await _contextDB.Korisnici.Where(k => k.Verifikovan == odobren).ToListAsync();
+        }
     }
 }
