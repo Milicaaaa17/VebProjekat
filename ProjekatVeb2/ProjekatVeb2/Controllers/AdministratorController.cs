@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProjekatVeb2.Interfaces.IServices;
 
 namespace ProjekatVeb2.Controllers
@@ -15,12 +16,14 @@ namespace ProjekatVeb2.Controllers
         }
 
         [HttpGet("registracije")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> PrikaziRegistracije()
         {
             var korisnici = await _adminService.DohvatiRegistracijeZaOdobrenje();
             return Ok(korisnici);
         }
         [HttpPost("registracije/{id}/odobri")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> OdobriRegistraciju(int id)
         {
             var uspjesno = await _adminService.AdminOdobravaRegistraciju(id);
@@ -34,6 +37,7 @@ namespace ProjekatVeb2.Controllers
         }
 
         [HttpPost("registracije/{id}/odbij")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> OdbijRegistraciju(int id)
         {
             
