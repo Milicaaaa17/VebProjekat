@@ -31,7 +31,7 @@ namespace ProjekatVeb2.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Prodavac")]
+        [Authorize(Roles = "Prodavac", Policy = "SamoVerifikovani")]
         public async Task<IActionResult> ArtikalPoId(int id)
         {
 
@@ -47,7 +47,7 @@ namespace ProjekatVeb2.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Prodavac")]
+       // [Authorize(Roles = "Prodavac", Policy = "SamoVerifikovani")]
         [AllowAnonymous]
         public async Task<IActionResult> DodajArtikal([FromBody] KreirajArtikalDTO kreirajartikalDto)
         {
@@ -83,6 +83,7 @@ namespace ProjekatVeb2.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Prodavac", Policy = "SamoVerifikovani")]
         public async Task<IActionResult> AzurirajArtikal(int id, [FromBody] ArtikalDTO artikalDto)
         {
             if (!ModelState.IsValid)
@@ -107,9 +108,9 @@ namespace ProjekatVeb2.Controllers
                 return BadRequest(ex.Message);
             }
         }
-    
+
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Prodavac")]
+        [Authorize(Roles = "Prodavac", Policy = "SamoVerifikovani")]
         public async Task<IActionResult> ObrisiArtikal(int id)
         {
             bool uspesnoObrisan = await _artikalService.ObrisiArtikal(id);

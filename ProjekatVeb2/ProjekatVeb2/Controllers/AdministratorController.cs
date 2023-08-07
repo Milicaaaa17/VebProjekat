@@ -22,6 +22,8 @@ namespace ProjekatVeb2.Controllers
             var korisnici = await _adminService.DohvatiRegistracijeZaOdobrenje();
             return Ok(korisnici);
         }
+
+
         [HttpPost("registracije/{id}/odobri")]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> OdobriRegistraciju(int id)

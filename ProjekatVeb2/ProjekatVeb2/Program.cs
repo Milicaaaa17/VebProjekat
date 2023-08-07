@@ -18,6 +18,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using ProjekatVeb2.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +56,19 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyCorsPolicy",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000", "http://localhost:3001", "http://localhost:3002", "https://localhost:3000", "https://localhost:3001", "https://localhost:3002")
+                   .AllowAnyMethod()
+                   .AllowAnyHeader()
+                   .AllowCredentials();
+        });
+});
+
 //baza povezivanje
 builder.Services.AddDbContext<ContextDB>(options =>
 {
@@ -75,8 +90,13 @@ builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IAdministratorService, AdministratorService>();
 builder.Services.AddScoped<IArtikalService, ArtikalService>();
 builder.Services.AddScoped<IPorudzbinaService, PorudzbinaService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 
+// Add email configuration
+var emailConfiguration = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+builder.Services.AddSingleton(emailConfiguration);
+builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailConfiguration"));
 
 
 // Konfigurišite JwtSettings
@@ -160,6 +180,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+
+
 var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -169,7 +191,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("MyCorsPolicy");
 app.UseHttpsRedirection();
-app.UseAuthorization();
+
 app.MapControllers();
 app.Run();

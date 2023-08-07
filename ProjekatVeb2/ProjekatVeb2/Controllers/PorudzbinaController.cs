@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjekatVeb2.DTO;
 using ProjekatVeb2.Interfaces.IServices;
@@ -20,6 +21,7 @@ namespace ProjekatVeb2.Controllers
 
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Kupac")]
         public async Task<IActionResult> PorudzbinaPoId(int id)
         {
             var porudzbina = await _porudzbinaService.PreuzmiPorudzbinuPoId(id);
@@ -34,6 +36,7 @@ namespace ProjekatVeb2.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SvePorudzbine()
         {
             var porudzbine = await _porudzbinaService.PreuzmiSvePorudzbine();
@@ -41,6 +44,7 @@ namespace ProjekatVeb2.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Kupac")]
         public async Task<IActionResult> DodajPorudzbinu([FromBody] KreirajPorudzbinuDTO kreirajPorudzbinuDto)
         {
             if (!ModelState.IsValid)
@@ -62,10 +66,9 @@ namespace ProjekatVeb2.Controllers
 
         }
 
-    
-
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Kupac")]
         public async Task<IActionResult> AzurirajPorudzbinu(int id, [FromBody] PorudzbinaDTO porudzbinaDto)
         {
             if (!ModelState.IsValid)
@@ -93,6 +96,7 @@ namespace ProjekatVeb2.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Kupac")]
         public async Task<IActionResult> IzbrisiPorudzbinu(int id)
         {
             var porudzbina = await _porudzbinaService.PreuzmiPorudzbinuPoId(id);

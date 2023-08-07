@@ -1,13 +1,16 @@
-﻿using ProjekatVeb2.Models;
+﻿using ProjekatVeb2.DTO;
+using ProjekatVeb2.Models;
 
 namespace ProjekatVeb2.Interfaces.IServices
 {
     public interface IKorisnikService
     {
         Task<Korisnik> KorisnikNaOsnovuId(int id);
-       // Task AzurirajKorisnika(IzmjenaProfilaDto izmjenaProfilaDto);
+        Task<IEnumerable<Korisnik>> SviKorisnici();
+        Task AzurirajKorisnika(KorisnikDTO korisnikDto);
+
         Task<bool> BrisanjeKorisnikaNaOsnovuId(int id);
 
-      
+
     }
 }

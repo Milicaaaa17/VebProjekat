@@ -12,16 +12,17 @@ namespace ProjekatVeb2.Controllers
     public class KorisnikController : ControllerBase
     {
         private readonly IKorisnikService _korisnikService;
+        private readonly IEnkripcijaService _enkripcijaService;
         private readonly IMapper _mapper;
 
-        public KorisnikController(IKorisnikService korisnikService, IMapper mapper)
+        public KorisnikController(IKorisnikService korisnikService, IEnkripcijaService enkripcijaService, IMapper mapper)
         {
-            _korisnikService = korisnikService;        
+            _korisnikService = korisnikService;
+            _enkripcijaService = enkripcijaService;
             _mapper = mapper;
         }
 
         [HttpDelete("{id}")]
-
         [AllowAnonymous]
         public async Task<IActionResult> BrisanjeKorisnika(int id)
         {
@@ -36,7 +37,6 @@ namespace ProjekatVeb2.Controllers
         }
 
         [HttpGet("{id}")]
-
         [AllowAnonymous]
         public async Task<IActionResult> PronadjiKorisnikaSaId(int id)
         {
@@ -55,7 +55,7 @@ namespace ProjekatVeb2.Controllers
 
        
         [HttpGet("{id}/profil")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> DobaviProfilKorisnika(int id)
         {
             var korisnik = await _korisnikService.KorisnikNaOsnovuId(id);
@@ -64,6 +64,44 @@ namespace ProjekatVeb2.Controllers
 
                 var korisnikDto = _mapper.Map<KorisnikDTO>(korisnik);
                 return Ok(korisnikDto);
+            }
+            return NotFound("Nije pronadjen");
+        }
+
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> AzuriranjeKorisnika(int id, [FromBody] KorisnikDTO korisnikDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (id != korisnikDto.IdKorisnika)
+            {
+                return BadRequest("Id korisnika se ne poklapa sa Id vrednošću u rutiranju.");
+            }
+            try
+            {
+                await _korisnikService.AzurirajKorisnika(korisnikDto);
+                return Ok("Korisnik je uspešno ažuriran.");
+            }
+            catch (Exception ex)
+            {
+                // Prikazivanje unutrašnjeg izuzetka
+                return BadRequest($"Greška prilikom ažuriranja korisnika: {ex.InnerException?.Message}");
+            }
+        }
+
+
+        [HttpGet("{id}/status-verifikacije")]
+        [Authorize]
+        public async Task<IActionResult> DobaviStatusVerifikacije(int id)
+        {
+            var korisnik = await _korisnikService.KorisnikNaOsnovuId(id);
+            if (korisnik != null)
+            {
+                return Ok(korisnik.VerifikacijaKorisnika.ToString());
             }
             return NotFound("Nije pronadjen");
         }
