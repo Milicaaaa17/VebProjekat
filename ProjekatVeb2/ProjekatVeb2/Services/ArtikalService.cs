@@ -1,4 +1,6 @@
-﻿using ProjekatVeb2.Interfaces.IRepoistory;
+﻿using AutoMapper;
+using ProjekatVeb2.DTO;
+using ProjekatVeb2.Interfaces.IRepoistory;
 using ProjekatVeb2.Interfaces.IServices;
 using ProjekatVeb2.Models;
 
@@ -8,35 +10,39 @@ namespace ProjekatVeb2.Services
 
     {
         private readonly IArtikalRepository _artikalRepozitorijum;
+        private readonly IMapper _mapper;
 
-        public ArtikalService(IArtikalRepository artikalRepozitorijum)
+        public ArtikalService(IArtikalRepository artikalRepozitorijum, IMapper mapper)
         {
             _artikalRepozitorijum = artikalRepozitorijum;
+            _mapper = mapper;
         }
 
-        public async Task AzurirajArtikal(Artikal artikal)
+        public async Task AzurirajArtikal(ArtikalDTO artikalDTO)
         {
-            bool artikalPostoji = await _artikalRepozitorijum.ArtikalPostoji(artikal.IdArtikla);
+            bool artikalPostoji = await _artikalRepozitorijum.ArtikalPostoji(artikalDTO.IdArtikla);
             if (!artikalPostoji)
             {
                 throw new Exception("Artikal sa datim id ne postoji");
             }
 
+            Artikal artikal = _mapper.Map<Artikal>(artikalDTO);
             await _artikalRepozitorijum.AzurirajArtikal(artikal);
         }
 
-        public async Task DodajNoviArtikal(Artikal artikal)
+        public async Task DodajNoviArtikal(KreirajArtikalDTO kreirajArtikalDto)
         {
-            bool artikalPostoji = await _artikalRepozitorijum.ArtikalPostojiPoNazivu(artikal.Naziv);
+            bool artikalPostoji = await _artikalRepozitorijum.ArtikalPostojiPoNazivu(kreirajArtikalDto.Naziv);
             if (artikalPostoji)
             {
                 throw new Exception("Artikal sa datim nazivom vec postoji");
             }
-            if (artikal.Cijena < 0)
+            if (kreirajArtikalDto.Cijena < 0)
             {
                 throw new Exception("Cijena mora bii veca od 0");
             }
 
+            Artikal artikal = _mapper.Map<Artikal>(kreirajArtikalDto);
             await _artikalRepozitorijum.DodajArtikal(artikal);
         }
 

@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ProjekatVeb2.DTO;
 using ProjekatVeb2.Interfaces.IServices;
 using ProjekatVeb2.Models;
 
@@ -9,13 +12,16 @@ namespace ProjekatVeb2.Controllers
     public class ArtikalController : ControllerBase
     {
         private readonly IArtikalService _artikalService;
+        private readonly IMapper _mapper;
 
-        public ArtikalController(IArtikalService artikalService)
+        public ArtikalController(IArtikalService artikalService, IMapper mapper)
         {
             _artikalService = artikalService;
+            _mapper = mapper;
         }
 
         [HttpGet]
+        [Authorize(Roles = "Kupac")]
         public async Task<IActionResult> SviArtikli()
         {
 
@@ -25,6 +31,7 @@ namespace ProjekatVeb2.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Prodavac")]
         public async Task<IActionResult> ArtikalPoId(int id)
         {
 
@@ -40,7 +47,9 @@ namespace ProjekatVeb2.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DodajArtikal([FromBody] Artikal artikal)
+        [Authorize(Roles = "Prodavac")]
+        [AllowAnonymous]
+        public async Task<IActionResult> DodajArtikal([FromBody] KreirajArtikalDTO kreirajartikalDto)
         {
 
             if (!ModelState.IsValid)
@@ -48,39 +57,59 @@ namespace ProjekatVeb2.Controllers
                 return BadRequest(ModelState);
             }
             else
-            {
-                await _artikalService.DodajNoviArtikal(artikal);
-                return Ok("Uspjesno ste dodali artikal");
-            }
+                try
+                {
+                    await _artikalService.DodajNoviArtikal(kreirajartikalDto);
+                    return Ok("Uspješno ste dodali artikal");
+                }
+                catch (Exception ex)
+                {
+                    // Obrada specifičnih izuzetaka
+                    if (ex.Message == "Artikal sa istim nazivom vec postoji")
+                    {
+                        return Conflict("Artikal sa istim nazivom već postoji");
+                    }
+                    else if (ex.Message == "Cijena artikla mora biti pozitivan broj")
+                    {
+                        return BadRequest("Cijena artikla mora biti pozitivan broj");
+                    }
+                    else
+                    {
+                        // Obrada ostalih izuzetaka
+                        return StatusCode(StatusCodes.Status500InternalServerError, "Došlo je do greške prilikom dodavanja artikla.");
+                    }
+
+                }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> AzurirajArtikal(int id, [FromBody] Artikal artikal)
+        public async Task<IActionResult> AzurirajArtikal(int id, [FromBody] ArtikalDTO artikalDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != artikal.IdArtikla)
+            if (id != artikalDto.IdArtikla)
             {
                 return BadRequest("ID artikla se ne podudara sa ID-em u zahtevu.");
             }
 
-
+            Artikal artikal = _mapper.Map<Artikal>(artikalDto);
 
             try
             {
-                await _artikalService.AzurirajArtikal(artikal);
-                return Ok("Artikal je uspjesno azuriran.");
+                await _artikalService.AzurirajArtikal(artikalDto);
+                return Ok("Artikal je uspješno ažuriran.");
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-
+    
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Prodavac")]
         public async Task<IActionResult> ObrisiArtikal(int id)
         {
             bool uspesnoObrisan = await _artikalService.ObrisiArtikal(id);

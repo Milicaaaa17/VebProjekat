@@ -1,31 +1,39 @@
-﻿using ProjekatVeb2.Interfaces.IRepoistory;
+﻿using AutoMapper;
+using ProjekatVeb2.DTO;
+using ProjekatVeb2.Interfaces.IRepoistory;
 using ProjekatVeb2.Interfaces.IServices;
 using ProjekatVeb2.Models;
+using ProjekatVeb2.Repository;
 
 namespace ProjekatVeb2.Services
 {
     public class PorudzbinaService :IPorudzbinaService
     {
         private readonly IPorudzbinaRepository _porudzbinaRepository;
+        private readonly IMapper _mapper;
 
-        public PorudzbinaService(IPorudzbinaRepository porudzbinaRepository)
+        public PorudzbinaService(IPorudzbinaRepository porudzbinaRepository, IMapper mapper)
         {
             _porudzbinaRepository = porudzbinaRepository;
+            _mapper = mapper;
         }
 
-        public async Task AzurirajPorudzbinu(Porudzbina porudzbina)
+        public async Task AzurirajPorudzbinu(PorudzbinaDTO porudzbinaDto)
         {
-            bool porudzbinaPostoji = await _porudzbinaRepository.PorudzbinaPostoji(porudzbina.IdPorudzbine);
+            bool porudzbinaPostoji = await _porudzbinaRepository.PorudzbinaPostoji(porudzbinaDto.IdPorudzbine);
             if (!porudzbinaPostoji)
             {
                 throw new Exception("Porudzbina sa datim ID-em ne postoji.");
             }
 
+            Porudzbina porudzbina = _mapper.Map<Porudzbina>(porudzbinaDto);
             await _porudzbinaRepository.AzurirajPorudzbinu(porudzbina);
         }
 
-        public async Task DodajPorudzbinu(Porudzbina porudzbina)
+       
+        public async Task DodajPorudzbinu(KreirajPorudzbinuDTO kreirajPorudzbinuDto)
         {
+            Porudzbina porudzbina = _mapper.Map<Porudzbina>(kreirajPorudzbinuDto);
             await _porudzbinaRepository.DodajPorudzbinu(porudzbina);
         }
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjekatVeb2.Data;
+using ProjekatVeb2.DTO;
 using ProjekatVeb2.Interfaces.IRepoistory;
 using ProjekatVeb2.Models;
 
@@ -72,6 +73,9 @@ namespace ProjekatVeb2.Repository
             return await _contextDB.Artikli.AnyAsync(a => a.Naziv == naziv);
         }
 
-        
+        public Task AzurirajArtikal(ArtikalDTO artikalDto)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

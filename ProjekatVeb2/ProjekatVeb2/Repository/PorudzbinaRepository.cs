@@ -16,7 +16,7 @@ namespace ProjekatVeb2.Repository
 
         public async Task AzurirajPorudzbinu(Porudzbina porudzbina)
         {
-            _contextDB.Porudzbine.Update(porudzbina);
+            _contextDB.Entry(porudzbina).State = EntityState.Modified;
             await _contextDB.SaveChangesAsync();
         }
 

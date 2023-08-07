@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using ProjekatVeb2.DTO;
 using ProjekatVeb2.Interfaces.IServices;
 using ProjekatVeb2.Models;
 
@@ -9,9 +11,11 @@ namespace ProjekatVeb2.Controllers
     public class PorudzbinaController : ControllerBase
     {
         private readonly IPorudzbinaService _porudzbinaService;
-        public PorudzbinaController(IPorudzbinaService porudzbinaService)
+        private readonly IMapper _mapper;
+        public PorudzbinaController(IPorudzbinaService porudzbinaService, IMapper mapper)
         {
             _porudzbinaService = porudzbinaService;
+            _mapper = mapper;
         }
 
 
@@ -37,47 +41,53 @@ namespace ProjekatVeb2.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DodajPorudzbinu([FromBody] Porudzbina porudzbina)
+        public async Task<IActionResult> DodajPorudzbinu([FromBody] KreirajPorudzbinuDTO kreirajPorudzbinuDto)
         {
-            if (porudzbina == null)
-            {
-                return BadRequest("Porudzbina ne moze biti null.");
-            }
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+            if (kreirajPorudzbinuDto == null)
+            {
+                return BadRequest("Porudzbina ne moze biti null.");
+            }
+
             else
             {
-                await _porudzbinaService.DodajPorudzbinu(porudzbina);
+
+                await _porudzbinaService.DodajPorudzbinu(kreirajPorudzbinuDto);
                 return Ok("Uspjesno ste dodali novu porudzbinu");
             }
 
         }
 
+    
+
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> AzurirajPorudzbinu(int id, [FromBody] Porudzbina porudzbina)
+        public async Task<IActionResult> AzurirajPorudzbinu(int id, [FromBody] PorudzbinaDTO porudzbinaDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != porudzbina.IdPorudzbine)
+            if (id != porudzbinaDto.IdPorudzbine)
             {
                 return BadRequest("ID porudzbine se ne podudara sa ID u zahtevu.");
             }
+            Porudzbina porudzbina = _mapper.Map<Porudzbina>(porudzbinaDto);
+
 
             try
             {
-                await _porudzbinaService.AzurirajPorudzbinu(porudzbina);
+                await _porudzbinaService.AzurirajPorudzbinu(porudzbinaDto);
                 return Ok("Porudzbina je uspjesno azurirana.");
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.ToString());
+                return BadRequest(ex.Message);
             }
 
         }

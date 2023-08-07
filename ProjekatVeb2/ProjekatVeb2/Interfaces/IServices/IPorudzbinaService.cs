@@ -1,4 +1,5 @@
-﻿using ProjekatVeb2.Models;
+﻿using ProjekatVeb2.DTO;
+using ProjekatVeb2.Models;
 
 namespace ProjekatVeb2.Interfaces.IServices
 {
@@ -6,8 +7,8 @@ namespace ProjekatVeb2.Interfaces.IServices
     {
         Task<Porudzbina> PreuzmiPorudzbinuPoId(int id);
         Task<List<Porudzbina>> PreuzmiSvePorudzbine();
-        Task DodajPorudzbinu(Porudzbina porudzbina);
-        Task AzurirajPorudzbinu(Porudzbina porudzbina);
+        Task DodajPorudzbinu(KreirajPorudzbinuDTO kreirajPorudzbinuDto);
+        Task AzurirajPorudzbinu(PorudzbinaDTO porudzbinaDto);
         Task<bool> ObrisiPoruzbinu(int id);
     }
 }
