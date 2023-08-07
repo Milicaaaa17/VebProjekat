@@ -39,6 +39,10 @@ namespace ProjekatVeb2.Repository
 
         public async Task DodajArtikal(Artikal artikal)
         {
+            if (artikal == null)
+            {
+                throw new ArgumentNullException(nameof(artikal), "Artikal ne može biti null.");
+            }
             _contextDB.Artikli.Add(artikal);
             await _contextDB.SaveChangesAsync();
         }
