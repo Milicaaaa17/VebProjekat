@@ -22,6 +22,13 @@ namespace ProjekatVeb2.Interfaces.IRepoistory
         Task BrisanjeKorisnikaNaOsnovuId(int id);
 
         //
-        Task<IEnumerable<Korisnik>> KorisniciCekajuOdobrenje(bool odobren);
+        Task<IEnumerable<Korisnik>> SviProdavci();
+        Task<Korisnik> ProdavacNaOsnovuId(int id);
+        Task<IEnumerable<Korisnik>> SviVerifikovaniProdavci();
+        Task<IEnumerable<Korisnik>> SviOdbijeniProdavci();
+        Task<IEnumerable<Korisnik>> SviProdavciKojiCekajuVerifikaciju();
+        Task<bool> AzurirajStatusVerifikacije(int korisnikId, bool verifikovan, StatusVerifikacije statusVerifikacije);
+
+
     }
 }

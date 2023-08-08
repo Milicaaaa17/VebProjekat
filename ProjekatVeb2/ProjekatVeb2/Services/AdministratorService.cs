@@ -8,59 +8,100 @@ namespace ProjekatVeb2.Services
     public class AdministratorService : IAdministratorService
     {
         private readonly IKorisnikRepository _korisnikRepository;
+        private readonly ContextDB _contextDB;
+        private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
 
-        public AdministratorService(IKorisnikRepository korisnikRepository)
+        public AdministratorService(IKorisnikRepository korisnikRepository, ContextDB contextDB, IConfiguration configuration, IEmailService emailService)
         {
             _korisnikRepository = korisnikRepository;
+            _contextDB = contextDB;
+            _configuration = configuration;
+            _emailService = emailService;
         }
 
-        public async Task<bool> AdminOdbijaRegistraciju(int id)
+        public async Task<bool> AdminOdbijaVerifikacijuProdavca(int korisnikId)
         {
-            var korisnik = await _korisnikRepository.KorisnikNaOsnovuId(id);
-            if (korisnik != null && !korisnik.Verifikovan)
+
+            var uspjesno = await _korisnikRepository.AzurirajStatusVerifikacije(korisnikId, false, StatusVerifikacije.Odbijen);
+            if (uspjesno)
             {
-                await _korisnikRepository.BrisanjeKorisnikaNaOsnovuId(id);
-                return true;
+                var korisnik = await _korisnikRepository.KorisnikNaOsnovuId(korisnikId);
+                if (korisnik != null)
+                {
+                    var message = new Message
+                    {
+                        To = new List<string> { korisnik.Email },
+                        Subject = "Verifikacija prodavca",
+                        Content = "Vaš zahtjev za verifikaciju je odbijen."
+                    };
+
+                    _emailService.PosaljiEmail(message);
+                }
             }
-            else
+
+            return uspjesno;
+        }
+
+        public async Task<bool> AdminVerifikujeProdavca(int korisnikId)
+        {
+
+
+            var korisnik = await _korisnikRepository.KorisnikNaOsnovuId(korisnikId);
+            if (korisnik == null)
             {
                 return false;
             }
-        }
 
-        public async Task<bool> AdminOdobravaRegistraciju(int id)
-        {
-            var korisnik = await _korisnikRepository.KorisnikNaOsnovuId(id);
-            if (korisnik != null && !korisnik.Verifikovan)
+            var uspjesno = await _korisnikRepository.AzurirajStatusVerifikacije(korisnikId, true, StatusVerifikacije.Odobren);
+            if (uspjesno)
             {
-                korisnik.Verifikovan = true;
-                await _korisnikRepository.AzurirajKorisnika(korisnik);
-                return true;
+                var message = new Message
+                {
+                    To = new List<string> { korisnik.Email },
+                    Subject = "Verifikacija prodavca",
+                    Content = "Čestitamo! Vaš zahtjev za verifikaciju je prihvaćen."
+                };
+
+                _emailService.PosaljiEmail(message);
             }
-            else
-            {
-                return false;
-            }
+
+            return uspjesno;
         }
 
-        public async Task<IEnumerable<Korisnik>> DohvatiRegistracijeZaOdobrenje()
+        public async Task<IEnumerable<Korisnik>> SviProdavciKojiCekajuVerifikaciju()
         {
-            return await _korisnikRepository.KorisniciCekajuOdobrenje(false);
+            return await _korisnikRepository.SviProdavciKojiCekajuVerifikaciju();
         }
 
-        public Task OdbijVerifikacijuProdavca(int prodavacId)
+        public async Task<IEnumerable<Korisnik>> SviProdavci()
         {
-            throw new NotImplementedException();
+            return await _korisnikRepository.SviProdavci();
         }
 
-        public Task<IEnumerable<Korisnik>> SviProdavciKojiCekajuVerifikaciju()
+        public async Task<Korisnik> VerifikovanProdavac(int id)
         {
-            throw new NotImplementedException();
+            return await _korisnikRepository.KorisnikNaOsnovuId(id);
         }
 
-        public Task VerifikujProdavca(int prodavacId)
+        public async Task<Korisnik> ProdavacNaOsnovuId(int id)
         {
-            throw new NotImplementedException();
+            return await _korisnikRepository.ProdavacNaOsnovuId(id);
+        }
+
+        public async Task<IEnumerable<Korisnik>> SviVerifikovaniProdavci()
+        {
+            return await _korisnikRepository.SviVerifikovaniProdavci();
+        }
+
+        public async Task<IEnumerable<Korisnik>> SviKorisnici()
+        {
+            return await _korisnikRepository.SviKorisnici();
+        }
+
+        public async Task<IEnumerable<Korisnik>> SviOdbijeniProdavci()
+        {
+            return await _korisnikRepository.SviOdbijeniProdavci();
         }
     }
 }

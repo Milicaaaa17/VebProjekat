@@ -10,6 +10,6 @@ namespace ProjekatVeb2.Interfaces.IRepoistory
         Task AzurirajPorudzbinu(Porudzbina porudzbina);
         Task ObrisiPorudzbinu(int id);
         Task<bool> PorudzbinaPostoji(int id);
-        // Task<List<Porudzbina>> PretraziPorudzbine(string pretragaKriterijum);
+       
     }
 }

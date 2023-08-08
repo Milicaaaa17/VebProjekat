@@ -47,7 +47,7 @@ namespace ProjekatVeb2.Controllers
         }
 
         [HttpPost]
-       // [Authorize(Roles = "Prodavac", Policy = "SamoVerifikovani")]
+        [Authorize(Roles = "Prodavac", Policy = "SamoVerifikovani")]
         [AllowAnonymous]
         public async Task<IActionResult> DodajArtikal([FromBody] KreirajArtikalDTO kreirajartikalDto)
         {
@@ -84,7 +84,7 @@ namespace ProjekatVeb2.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Prodavac", Policy = "SamoVerifikovani")]
-        public async Task<IActionResult> AzurirajArtikal(int id, [FromBody] ArtikalDTO artikalDto)
+        public async Task<IActionResult> AzurirajArtikal(int id, [FromBody] IzmijeniArtikalDTO artikalDto)
         {
             if (!ModelState.IsValid)
             {
@@ -105,7 +105,8 @@ namespace ProjekatVeb2.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest($"Greska prilikom azuriranja: {ex.InnerException?.Message}");
+
             }
         }
 

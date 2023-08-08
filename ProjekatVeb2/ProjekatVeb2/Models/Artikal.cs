@@ -1,4 +1,6 @@
-﻿namespace ProjekatVeb2.Models
+﻿using Newtonsoft.Json;
+
+namespace ProjekatVeb2.Models
 {
     public class Artikal
     {
@@ -11,6 +13,7 @@
         public Korisnik Korisnik { get; set; }
         public int KorisnikId { get; set; }
 
+        [JsonIgnore]
         public List<PoruzdbinaArtikal> PoruceniArtikli { get; set; }
         
        

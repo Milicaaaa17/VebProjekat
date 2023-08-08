@@ -75,6 +75,9 @@ builder.Services.AddDbContext<ContextDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("KonekcijaSaBazomVebProjekat"));
 });
 
+// Dodajte IHttpContextAccessor kao servis sa opcijom Scoped.
+builder.Services.AddHttpContextAccessor();
+
 // Dodajte vaše repozitorijume
 builder.Services.AddScoped<IKorisnikRepository, KorisnikRepository>();
 builder.Services.AddScoped<IArtikalRepository, ArtikalRepository>();
@@ -182,6 +185,7 @@ builder.Services.AddAuthentication(options =>
 
 
 
+
 var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -193,6 +197,5 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors("MyCorsPolicy");
 app.UseHttpsRedirection();
-
 app.MapControllers();
 app.Run();

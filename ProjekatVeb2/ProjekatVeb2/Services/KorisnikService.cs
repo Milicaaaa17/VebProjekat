@@ -20,29 +20,59 @@ namespace ProjekatVeb2.Services
             _enkripcijaService = enkripcijaService;
         }
 
-        public async Task AzurirajKorisnika(KorisnikDTO korisnikDto)
+        public async Task AzurirajKorisnika(IzmjenaProfilaDTO korisnikDto)
         {
-            bool dostupno = await _korisnikRepository.ProvjeriDostupnostKorisnickogImena(korisnikDto.KorisnickoIme);
-            if (!dostupno)
-            {
-                throw new Exception("Korisnik sa datim korisničkim imenom već postoji.");
-            }
-
-            bool zauzet = await _korisnikRepository.ProvjeriZauzetostEmail(korisnikDto.Email);
-            if (!zauzet)
-            {
-               throw new Exception("Korisnik sa datom email adresom već postoji.");
-            }
 
             if (korisnikDto.Lozinka.Length < 8)
             {
                 throw new Exception("Lozinka mora imati barem 8 karaktera.");
             }
-            if (korisnikDto.Lozinka != korisnikDto.PonoviLozinku)
+
+            if (korisnikDto.Lozinka != korisnikDto.PonovljenaLozinka)
             {
                 throw new Exception("Lozinke se ne poklapaju.");
             }
-            Korisnik korisnik = _mapper.Map<Korisnik>(korisnikDto);
+
+            // Dohvati korisnika iz baze podataka
+            Korisnik postojeciKorisnik = await _korisnikRepository.KorisnikNaOsnovuId(korisnikDto.Id);
+            if (postojeciKorisnik == null)
+            {
+                throw new Exception("Korisnik ne postoji.");
+
+            }
+            postojeciKorisnik.KorisnickoIme = korisnikDto.KorisnickoIme;
+            postojeciKorisnik.Email = korisnikDto.Email;
+            postojeciKorisnik.Ime = korisnikDto.Ime;
+            postojeciKorisnik.Prezime = korisnikDto.Prezime;
+            postojeciKorisnik.Lozinka = _enkripcijaService.EnkriptujLozinku(korisnikDto.Lozinka);
+            postojeciKorisnik.PonoviLozinku = _enkripcijaService.EnkriptujLozinku(korisnikDto.PonovljenaLozinka);
+            postojeciKorisnik.Adresa = korisnikDto.Adresa;
+            postojeciKorisnik.DatumRodjenja = korisnikDto.DatumRodjenja;
+
+
+            if (korisnikDto.Slika != null)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    korisnikDto.Slika.CopyTo(ms);
+                    var slikaByte = ms.ToArray();
+                    postojeciKorisnik.Slika = slikaByte;
+
+                }
+            }
+
+
+            if (korisnikDto.KorisnickoIme != postojeciKorisnik.KorisnickoIme)
+            {
+                throw new Exception("Vec postoji u bazi korisnik sa tim korisnickim imenom");
+            }
+
+            if (korisnikDto.Email != postojeciKorisnik.Email)
+            {
+                throw new Exception("Vec postoji u bazi korisnik sa tim email ");
+            }
+
+            await _korisnikRepository.AzurirajKorisnika(postojeciKorisnik);
         }
 
         public async Task<bool> BrisanjeKorisnikaNaOsnovuId(int id)
@@ -57,6 +87,7 @@ namespace ProjekatVeb2.Services
             {
                 return false;
             }
+
         }
 
         public async Task<Korisnik> KorisnikNaOsnovuId(int id)
@@ -64,9 +95,5 @@ namespace ProjekatVeb2.Services
             return await _korisnikRepository.KorisnikNaOsnovuId(id);
         }
 
-        public async Task<IEnumerable<Korisnik>> SviKorisnici()
-        {
-            return await _korisnikRepository.SviKorisnici();
-        }
     }
 }

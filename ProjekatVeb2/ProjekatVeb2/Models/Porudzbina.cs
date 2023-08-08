@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjekatVeb2.Models
 {
@@ -10,7 +11,8 @@ namespace ProjekatVeb2.Models
         public string AdresaDostave { get; set; }
         public DateTime DatumPorudzbine { get; set; }
         public DateTime VrijemeDostave { get; set; }
-       
+
+        [JsonIgnore]
         public List<PoruzdbinaArtikal> PorudzbinaArtikal { get; set; }
         public Korisnik Korisnik { get; set; }
         public int KorisnikId { get; set; }

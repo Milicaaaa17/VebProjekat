@@ -51,9 +51,7 @@ namespace ProjekatVeb2.Controllers
             }
 
         }
-
-
-       
+      
         [HttpGet("{id}/profil")]
         [Authorize]
         public async Task<IActionResult> DobaviProfilKorisnika(int id)
@@ -68,31 +66,31 @@ namespace ProjekatVeb2.Controllers
             return NotFound("Nije pronadjen");
         }
 
-
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> AzuriranjeKorisnika(int id, [FromBody] KorisnikDTO korisnikDto)
+        public async Task<IActionResult> AzuriranjeKorisnika(int id, [FromForm] IzmjenaProfilaDTO korisnikDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (id != korisnikDto.IdKorisnika)
+
+            if (id != korisnikDto.Id)
             {
-                return BadRequest("Id korisnika se ne poklapa sa Id vrednošću u rutiranju.");
+                return BadRequest("Id korisnika se ne poklapa sa Id vrijednoscu u rutiranju.");
             }
+
             try
             {
                 await _korisnikService.AzurirajKorisnika(korisnikDto);
-                return Ok("Korisnik je uspešno ažuriran.");
+                return Ok("Korisnik je azuriran.");
             }
             catch (Exception ex)
             {
-                // Prikazivanje unutrašnjeg izuzetka
-                return BadRequest($"Greška prilikom ažuriranja korisnika: {ex.InnerException?.Message}");
+
+                return BadRequest($"Greska prilikom azuriranja: {ex.InnerException?.Message}");
             }
         }
-
 
         [HttpGet("{id}/status-verifikacije")]
         [Authorize]

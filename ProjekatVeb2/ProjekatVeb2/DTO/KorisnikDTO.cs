@@ -14,6 +14,6 @@ namespace ProjekatVeb2.DTO
         public DateTime DatumRodjenja { get; set; }
         public string Adresa { get; set; }
         public TipKorisnika Tip { get; set; }
-        public byte[]? Slika { get; set; }
+        public byte[] Slika { get; set; }
     }
 }

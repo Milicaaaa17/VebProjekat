@@ -11,8 +11,6 @@
         public string PonovljenaLozinka { get; set; }
         public string Adresa { get; set; }
         public DateTime DatumRodjenja { get; set; }
-
-
         public IFormFile? Slika { get; set; }
     }
 }

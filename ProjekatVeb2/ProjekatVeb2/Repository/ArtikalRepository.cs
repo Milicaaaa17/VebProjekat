@@ -20,8 +20,6 @@ namespace ProjekatVeb2.Repository
             return await _contextDB.Artikli.FindAsync(id);
         }
 
-       
-
         public async Task<IEnumerable<Artikal>> ArtikalNaOsnovuNaziva(string naziv)
         {
             return await _contextDB.Artikli.Where(a => a.Naziv.Contains(naziv)).ToListAsync();
@@ -73,9 +71,23 @@ namespace ProjekatVeb2.Repository
             return await _contextDB.Artikli.AnyAsync(a => a.Naziv == naziv);
         }
 
-        public Task AzurirajArtikal(ArtikalDTO artikalDto)
+       
+
+        public async Task AzurirajKolicinuArtikla(int artikalId, int novaKolicina)
         {
-            throw new NotImplementedException();
+            var artikal = await _contextDB.Artikli.FindAsync(artikalId);
+            if (artikal == null)
+            {
+                throw new Exception("Artikal sa datim ID-em ne postoji.");
+            }
+
+            artikal.Kolicina = novaKolicina;
+            await _contextDB.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Artikal>> SviArtikliProdavca(int prodavacId)
+        {
+            return await _contextDB.Artikli.Where(a => a.KorisnikId == prodavacId).ToListAsync();
         }
     }
 }

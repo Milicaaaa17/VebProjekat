@@ -17,6 +17,51 @@ namespace ProjekatVeb2.Repository
             _enkripcijaService = enkripcijaService;
         }
 
+        public async Task<bool> ProvjeriDostupnostKorisnickogImena(string korisnickoIme)
+        {
+            bool dostupno = await _contextDB.Korisnici.AnyAsync(k => k.KorisnickoIme == korisnickoIme);
+            return dostupno;
+        }
+
+
+        public async Task<bool> ProvjeriZauzetostEmail(string email)
+        {
+            bool zauzet = await _contextDB.Korisnici.AnyAsync(k => k.Email == email);
+            return !zauzet;
+        }
+
+
+        public async Task<bool> ProvjeriIspravnostEmail(string email)
+        {
+            bool ispravanEmail = await _contextDB.Korisnici.AnyAsync(k => k.Email == email);
+            return ispravanEmail;
+        }
+
+        public async Task<bool> ProvjeriIspravnostLozinke(string lozinka)
+        {
+            // string lozinka1 = _enkripcijaService.EnkriptujLozinku(lozinka);
+            bool ispravnaLozinka = await _contextDB.Korisnici.AnyAsync(k => k.Lozinka == lozinka);
+            return ispravnaLozinka;
+        }
+
+        public async Task<IEnumerable<Korisnik>> SviKorisnici()
+        {
+            return await _contextDB.Korisnici.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Korisnik>> SviProdavci()
+        {
+            var prodavci = await _contextDB.Korisnici
+            .Where(k => k.Tip == TipKorisnika.Prodavac)
+            .ToListAsync();
+            return prodavci;
+        }
+
+        public async Task<Korisnik> KorisnikNaOsnovuId(int id)
+        {
+            return await _contextDB.Korisnici.FirstOrDefaultAsync(k => k.IdKorisnika == id);
+        }
+
         public async Task AzurirajKorisnika(Korisnik korisnik)
         {
             _contextDB.Update(korisnik);
@@ -35,13 +80,47 @@ namespace ProjekatVeb2.Repository
 
         }
 
-        public async Task<List<Korisnik>> DobaviKorisnike()
+        public async Task<bool> AzurirajStatusVerifikacije(int korisnikId, bool verifikovan, StatusVerifikacije statusVerifikacije)
         {
-            return await _contextDB.Korisnici.ToListAsync();
+            var korisnik = await _contextDB.Korisnici.FirstOrDefaultAsync(k => k.IdKorisnika == korisnikId);
+            if (korisnik != null && korisnik.Tip == TipKorisnika.Prodavac)
+            {
+                korisnik.Verifikovan = verifikovan;
+                korisnik.VerifikacijaKorisnika = statusVerifikacije;
+                await _contextDB.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<Korisnik> ProdavacNaOsnovuId(int id)
+        {
+            return await _contextDB.Korisnici.FirstOrDefaultAsync(k => k.IdKorisnika == id && k.Tip == TipKorisnika.Prodavac);
+
+        }
+
+        public async Task<IEnumerable<Korisnik>> SviVerifikovaniProdavci()
+        {
+            var prodavci = await _contextDB.Korisnici
+            .Where(k => k.Tip == TipKorisnika.Prodavac && k.Verifikovan && k.VerifikacijaKorisnika == StatusVerifikacije.Odobren)
+            .ToListAsync();
+            return prodavci;
+        }
+
+        public async Task<IEnumerable<Korisnik>> SviProdavciKojiCekajuVerifikaciju()
+        {
+            var prodavci = await _contextDB.Korisnici
+            .Where(k => k.Tip == TipKorisnika.Prodavac && !k.Verifikovan && k.VerifikacijaKorisnika == StatusVerifikacije.UObradi)
+            .ToListAsync();
+            return prodavci;
         }
 
         public async Task DodajKorisnika(Korisnik korisnik)
         {
+
             if (korisnik == null)
             {
                 throw new ArgumentNullException(nameof(korisnik), "Korisnik ne može biti null.");
@@ -66,52 +145,23 @@ namespace ProjekatVeb2.Repository
             await _contextDB.SaveChangesAsync();
         }
 
+        public async Task<List<Korisnik>> DobaviKorisnike()
+        {
+            return await _contextDB.Korisnici.ToListAsync();
+        }
+
         public async Task<Korisnik> KorisnikNaOsnovuEmail(string email)
         {
             return await _contextDB.Korisnici.FirstOrDefaultAsync(k => k.Email == email);
         }
 
-        public async Task<Korisnik> KorisnikNaOsnovuId(int id)
+        public async Task<IEnumerable<Korisnik>> SviOdbijeniProdavci()
         {
-            return await _contextDB.Korisnici.FirstOrDefaultAsync(k => k.IdKorisnika == id);
+            var prodavci = await _contextDB.Korisnici
+            .Where(k => k.Tip == TipKorisnika.Prodavac && k.Verifikovan == false && k.VerifikacijaKorisnika == StatusVerifikacije.Odbijen)
+            .ToListAsync();
+            return prodavci;
         }
 
-        public async Task<bool> ProvjeriDostupnostKorisnickogImena(string korisnickoIme)
-        {
-            bool dostupno = await _contextDB.Korisnici.AnyAsync(k => k.KorisnickoIme == korisnickoIme);
-            return dostupno;
-        }
-
-        public async Task<bool> ProvjeriZauzetostEmail(string email)
-        {
-            bool zauzet = await _contextDB.Korisnici.AnyAsync(k => k.Email == email);
-            return !zauzet;
-        }
-
-
-        public async Task<bool> ProvjeriIspravnostEmail(string email)
-        {
-            bool ispravanEmail = await _contextDB.Korisnici.AnyAsync(k => k.Email == email);
-            return ispravanEmail;
-        }
-
-        public async Task<bool> ProvjeriIspravnostLozinke(string lozinka)
-        {
-            // string lozinka1 = _enkripcijaService.EnkriptujLozinku(lozinka);
-            bool ispravnaLozinka = await _contextDB.Korisnici.AnyAsync(k => k.Lozinka == lozinka);
-            return ispravnaLozinka;
-        }
-
-
-
-        public async Task<IEnumerable<Korisnik>> SviKorisnici()
-        {
-            return await _contextDB.Korisnici.ToListAsync();
-        }
-
-        public async Task<IEnumerable<Korisnik>> KorisniciCekajuOdobrenje(bool odobren)
-        {
-            return await _contextDB.Korisnici.Where(k => k.Verifikovan == odobren).ToListAsync();
-        }
     }
 }

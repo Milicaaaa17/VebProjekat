@@ -15,40 +15,75 @@ namespace ProjekatVeb2.Controllers
             _adminService = adminService;
         }
 
-        [HttpGet("registracije")]
+
+
+        [HttpGet("sviprodavci")]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> PrikaziRegistracije()
+        public async Task<IActionResult> SviProdavci()
         {
-            var korisnici = await _adminService.DohvatiRegistracijeZaOdobrenje();
+            var prodavci = await _adminService.SviProdavci();
+            return Ok(prodavci);
+        }
+
+        [HttpGet("sviverifikovaniprodavci")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> SviVerifikovaniProdavci()
+        {
+            var prodavci = await _adminService.SviVerifikovaniProdavci();
+            return Ok(prodavci);
+        }
+
+        [HttpGet("sviodbijeniprodavci")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> SviOdbijeniProdavci()
+        {
+            var prodavci = await _adminService.SviOdbijeniProdavci();
+            return Ok(prodavci);
+        }
+
+
+        [HttpGet("sviprodavcikojicekajuverifikaciju")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> SviProdavciKojiCekajuVerifikaciju()
+        {
+            var prodavci = await _adminService.SviProdavciKojiCekajuVerifikaciju();
+            return Ok(prodavci);
+        }
+
+        [HttpPost("registracije/{id}/prihvati-verifikaciju")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> PrihvatiRegistraciju(int id)
+        {
+            var korisnik = await _adminService.VerifikovanProdavac(id);
+            var uspjesno = await _adminService.AdminVerifikujeProdavca(id);
+            if (uspjesno)
+            {
+                return Ok("Verifikovan prodavac");
+            }
+            return NotFound("Nije pronadjen");
+        }
+
+
+        [HttpPost("registracije/{id}/odbij-verifikaciju")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> OdbijRegistracijuProdavca(int id)
+        {
+            var uspjesno = await _adminService.AdminOdbijaVerifikacijuProdavca(id);
+            if (uspjesno)
+            {
+                return Ok("Verifikacija je odbijena");
+            }
+            return NotFound("Korisnik nije pronađen");
+        }
+
+
+        [HttpGet("sviKorisnici")]
+        [Authorize(Roles = "Administrator")]
+
+        public async Task<IActionResult> SviKorisnici()
+        {
+            var korisnici = await _adminService.SviKorisnici();
             return Ok(korisnici);
-        }
-
-
-        [HttpPost("registracije/{id}/odobri")]
-        [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> OdobriRegistraciju(int id)
-        {
-            var uspjesno = await _adminService.AdminOdobravaRegistraciju(id);
-            if (uspjesno)
-            {
-               
-                return Ok("Registracija uspjesno odobrena");
-            }
-           
-            return NotFound("Nije pronadjena");
-        }
-
-        [HttpPost("registracije/{id}/odbij")]
-        [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> OdbijRegistraciju(int id)
-        {
-            
-            var uspjesno = await _adminService.AdminOdbijaRegistraciju(id);
-            if (uspjesno)
-            {
-                return Ok("Registracija odbijena");
-            }
-            return NotFound("Nije pronadjena");
         }
     }
 }

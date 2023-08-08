@@ -16,6 +16,8 @@ namespace ProjekatVeb2.Interfaces.IRepoistory
 
         Task<bool> ArtikalPostoji(int id);
         Task<bool> ArtikalPostojiPoNazivu(string naziv);
-        
+        Task AzurirajKolicinuArtikla(int artikalId, int novaKolicina);
+        Task<IEnumerable<Artikal>> SviArtikliProdavca(int prodavacId);
+
     }
 }

@@ -41,6 +41,6 @@ namespace ProjekatVeb2.Controllers
             }
         }
 
-       
+       //logovanje preko drustvene mreze
     }
 }
