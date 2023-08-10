@@ -27,6 +27,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+// Add email configuration
+var emailConfiguration = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+builder.Services.AddSingleton(emailConfiguration);
+builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailConfiguration"));
+
+
+// Konfigurišite JwtSettings
+var jwtSettings = new JwtSettings();
+builder.Configuration.GetSection("JwtSettings").Bind(jwtSettings);
+builder.Services.AddSingleton(jwtSettings);
+
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "PR522019_WEB2", Version = "v1" });
@@ -57,6 +70,8 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("MyCorsPolicy",
@@ -68,6 +83,8 @@ builder.Services.AddCors(options =>
                    .AllowCredentials();
         });
 });
+
+
 
 //baza povezivanje
 builder.Services.AddDbContext<ContextDB>(options =>
@@ -96,17 +113,38 @@ builder.Services.AddScoped<IPorudzbinaService, PorudzbinaService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 
-// Add email configuration
-var emailConfiguration = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
-builder.Services.AddSingleton(emailConfiguration);
-builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailConfiguration"));
 
 
-// Konfigurišite JwtSettings
-var jwtSettings = new JwtSettings();
-builder.Configuration.GetSection("JwtSettings").Bind(jwtSettings);
-builder.Services.AddSingleton(jwtSettings);
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"])),
+        ClockSkew = TimeSpan.Zero
+    };
+});
 
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+        .RequireAuthenticatedUser()
+        .Build();
+
+    options.AddPolicy("SamoVerifikovani", policy => policy.RequireClaim("StatusVerifikacije", "Odobren"));
+
+});
 
 
 
@@ -163,39 +201,20 @@ builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
 
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-        ValidAudience = builder.Configuration["JwtSettings:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"])),
-        ClockSkew = TimeSpan.Zero
-    };
-});
-
 
 
 
 var app = builder.Build();
-app.UseAuthentication();
-app.UseAuthorization();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors("MyCorsPolicy");
 app.UseHttpsRedirection();
+app.UseCors("MyCorsPolicy");
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();
