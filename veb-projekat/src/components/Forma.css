@@ -1,0 +1,90 @@
+.forma-container {
+  max-width: 300px;
+  margin: 2rem auto; /* Podešavanje jednakih gornje i donje margine */
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.forma-container h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #262626;
+}
+
+.forma-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.forma-container .error-container {
+  color: #e74c3c;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.forma-container .success-container {
+  color: #27ae60;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.forma-container label {
+  display: flex;
+  align-items: center; /* Centriramo tekst sa ikonom */
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+  color: #262626;
+}
+
+.forma-container input {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border: 1px solid #dbdbdb;
+  border-radius: 4px;
+  background-color: #fafafa;
+}
+
+/* Poravnavanje input polja */
+.forma-container input[type="text"],
+.forma-container input[type="email"],
+.forma-container input[type="password"],
+.forma-container input[type="date"],
+.forma-container select {
+  width: 100%;
+}
+.forma-container button {
+  padding: 0.5rem 1rem; /* Promijenjene vrijednosti padding margina */
+  font-size: 1rem;
+  background-color: #0095f6;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.forma-container button:hover {
+  background-color: #0085e6;
+}
+
+.forma-container a {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+  color: #0095f6;
+  text-decoration: none;
+  background-color: transparent;
+  border: none;
+}
+
+.forma-container a:hover {
+  text-decoration: underline;
+  background-color: transparent;
+  border: none;
+}
