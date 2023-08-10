@@ -15,6 +15,7 @@ namespace ProjekatVeb2.Controllers
         private readonly IEnkripcijaService _enkripcijaService;
         private readonly IMapper _mapper;
 
+
         public KorisnikController(IKorisnikService korisnikService, IEnkripcijaService enkripcijaService, IMapper mapper)
         {
             _korisnikService = korisnikService;
