@@ -1,0 +1,36 @@
+
+.tabela-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .tabela-container h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    }
+    
+    .tabela-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    }
+    
+    .tabela-container th,
+    .tabela-container td {
+    padding: 0.5rem;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    }
+    
+    .tabela-container th {
+    background-color: green;
+    color: white;
+    }
+    
+    .tabela-container tbody tr:hover {
+    background-color: #f0f8ff;
+    }

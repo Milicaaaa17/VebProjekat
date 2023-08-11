@@ -1,18 +1,20 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Registracija from './components/Registracija';
+import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Pocetna from './components/Pocetna';
 import Login from './components/Login';
+import Registracija from './components/Registracija';
+import Dashboard from './components/Dashboard';
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-      <Route path="/" element={<Pocetna />} />
+        <Route path="/" element={<Pocetna />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registracija" element={<Registracija />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 

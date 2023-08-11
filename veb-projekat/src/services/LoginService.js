@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const baseUrl = process.env.REACT_APP_API_URL;
-
+console.log('Slanje zahteva za prijavu...');
 export const prijaviKorisnika = async (podaci) => {
   try {
     const headers = {
@@ -9,14 +9,17 @@ export const prijaviKorisnika = async (podaci) => {
      
     };
 
-    const response = await axios.post(`${baseUrl}/Login`, JSON.stringify(podaci), {
+    const response = await axios.post(`${baseUrl}/login`, JSON.stringify(podaci), {
       headers: headers,
     });
-
+    console.log('Odgovor od servera:', response);
     return response.data;
-  } catch (error) {
-    console.error(error);
-    throw new Error(error.response.data.error);
+  }catch (error) {
+    console.log('Greška prilikom slanja zahteva:', error);
+    if (error.response) {
+      console.log('Odgovor od servera sa greškom:', error.response);
+    }
+    throw error;
   }
 };
 

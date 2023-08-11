@@ -48,7 +48,7 @@ namespace ProjekatVeb2.Services
         {
 
             using var client = new SmtpClient();
-            client.Connect("smtp-mail.outlook.com", 587, SecureSocketOptions.StartTls);
+            client.Connect("smtp-mail.gmail.com", 587, SecureSocketOptions.StartTls);
             client.Authenticate("milicar.506@gmail.com", "jecajana");
 
             client.Send(mailMessage);

@@ -14,13 +14,15 @@ namespace ProjekatVeb2.Services
         private readonly IEnkripcijaService _enkripcijaService;
         private readonly ContextDB _contextDB;
         private readonly JwtService _jwtService;
+        private readonly IConfiguration _configuration;
 
-        public LoginService(IKorisnikRepository korisnikRepository, IEnkripcijaService enkripcijaService, ContextDB contextDB, JwtService jwtService)
+        public LoginService(IKorisnikRepository korisnikRepository, IEnkripcijaService enkripcijaService, ContextDB contextDB, JwtService jwtService, IConfiguration configuration)
         {
             _korisnikRepository = korisnikRepository;
             _enkripcijaService = enkripcijaService;
             _contextDB = contextDB;
             _jwtService = jwtService;
+            _configuration = configuration;
         }
 
         public async Task<Prijava> PrijavaKorisnika(LoginDTO loginDto)

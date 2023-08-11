@@ -12,8 +12,9 @@ const Registracija = () => {
   const [prezime, setPrezime] = useState('');
   const [datumRodjenja, setDatumRodjenja] = useState('');
   const [adresa, setAdresa] = useState('');
+  const [tip, setTip] = useState('');
+
   const [slika, setSlika] = useState(null);
-  const [tip, setTip] = useState([]);
   const [greske, setGreske] = useState([]);
   const [uspjesnaRegistracija, setUspjesnaRegistracija] = useState(false);
 
@@ -74,39 +75,43 @@ const Registracija = () => {
     formData.append('prezime', prezime);
     formData.append('datumRodjenja', datumRodjenja);
     formData.append('adresa', adresa);
-    formData.append('slika', slika);
     formData.append('tip', enumVrijednost);
+    formData.append('slika', slika);
+   
 
   
     try {
-    const response = await registrujKorisnika(formData);
-    if (response && response.uspjesnaRegistracija) {
-      setUspjesnaRegistracija(true);
-      setKorisnickoIme('');
-      setEmail('');
-      setLozinka('');
-      setPonoviLozinku('');
-      setIme('');
-      setPrezime('');
-      setDatumRodjenja('');
-      setAdresa('');
-      setSlika(null);
-      setTip('');
-      setGreske([]);
-    } else {
-      setUspjesnaRegistracija(false);
-      if (response && response.errors) {
-        setGreske(response.errors);
+      const response = await registrujKorisnika(formData);
+      console.log('Odgovor od servera nakon registracije:', response); 
+      navigate('/login');
+      if (response && response.uspjesnaRegistracija) {
+        setUspjesnaRegistracija(true);
+        setKorisnickoIme('');
+        setEmail('');
+        setLozinka('');
+        setPonoviLozinku('');
+        setIme('');
+        setPrezime('');
+        setDatumRodjenja('');
+        setAdresa('');
+        setTip('');
+        setSlika(null);
+        setGreske([]);
+        console.log('Registracija uspješna:', uspjesnaRegistracija);
+        navigate('/login');
       } else {
-        setGreske('Greška prilikom registracije');
+        setUspjesnaRegistracija(false);
+        if (response && response.errors) {
+          setGreske(response.errors);
+        } else {
+          setGreske('Greška prilikom registracije');
+        }
       }
-    
+    } catch (error) {
+      console.error('Greška prilikom registracije:', error);
+      setUspjesnaRegistracija(false);
+      setGreske(['Korisničko ime ili email već postoje']);
     }
-  } catch (error) {
-    console.error('Greška prilikom registracije:', error);
-    setUspjesnaRegistracija(false);
-    setGreske(['Korisnicko ime ili email vec postoje']);
-  }
 };
   return (
     <div className="forma-container">
@@ -145,18 +150,19 @@ const Registracija = () => {
           <input type="text" value={adresa} onChange={(e) => setAdresa(e.target.value)} />
         </div>
         <div>
+        <label>Tip:</label>
+        <select name="tip" value={tip} onChange={(e) => setTip(e.target.value)}>
+          <option value="">Odaberi tip</option>
+          <option value="Prodavac">Prodavac</option>
+          <option value="Kupac">Kupac</option>
+        </select>
+        </div>
+      
+        <div>
           <label>Slika:</label>
           <input type="file" accept="image/*" onChange={(e) => setSlika(e.target.files[0])} />
         </div>
-        <div>
-        <label>Uloga:</label>
-        <select name="tip" value={tip} onChange={(e) => setTip(e.target.value)}>
-  <option value="">Odaberi ulogu</option>
-  <option value="Prodavac">Prodavac</option>
-  <option value="Kupac">Kupac</option>
-</select>
-</div>
-      
+        
         {Array.isArray(greske) && greske.length > 0 && (
           <div className="error-container">
             <ul>
@@ -166,12 +172,14 @@ const Registracija = () => {
            </ul>
       </div>
         )}
-        {uspjesnaRegistracija && (
-          <div className="success-container">
-            <p>Registracija uspjesna!</p>
-            {navigate('/login')}
-          </div>
-        )}
+
+{uspjesnaRegistracija && (
+  <div className="success-container">
+    <p>Registracija uspjesna!</p>
+  </div>
+)}
+{uspjesnaRegistracija && navigate('/login')}
+   
         <button type="submit">Registracija</button>
       </form>
       <Link to="/login">Imate nalog? Prijavite se!</Link>

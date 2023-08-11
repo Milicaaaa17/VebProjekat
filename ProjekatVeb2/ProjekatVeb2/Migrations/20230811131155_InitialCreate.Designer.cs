@@ -12,7 +12,7 @@ using ProjekatVeb2.Data;
 namespace ProjekatVeb2.Migrations
 {
     [DbContext(typeof(ContextDB))]
-    [Migration("20230801152828_InitialCreate")]
+    [Migration("20230811131155_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
