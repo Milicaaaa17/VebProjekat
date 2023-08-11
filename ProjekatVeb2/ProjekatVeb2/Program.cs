@@ -159,6 +159,7 @@ var mapperConfig = new MapperConfiguration(cfg =>
     cfg.CreateMap<Artikal, KreirajArtikalDTO>().ReverseMap();
     cfg.CreateMap<Porudzbina, PorudzbinaDTO>().ReverseMap();
     cfg.CreateMap<Porudzbina, KreirajPorudzbinuDTO>().ReverseMap();
+    cfg.CreateMap<Korisnik, IzmjenaProfilaDTO>().ReverseMap(); 
 
     //za sliku 
     cfg.CreateMap<IFormFile, byte[]>().ConvertUsing((file, _, context) =>
