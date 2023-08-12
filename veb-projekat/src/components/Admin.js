@@ -10,10 +10,14 @@ const Admin = () => {
  useEffect(() =>
 {
     const get = async()=>
-    {
-        const resp = await getSviKorisnici();
-        console.log(resp);
-        setKorisnici(resp.data);
+    {try {
+      const resp = await getSviKorisnici();
+      console.log(resp);
+      setKorisnici(resp.data);
+  } catch (error) {
+      console.error('Greška prilikom dohvaćanja korisnika:', error);
+      // Ovdje možete dodati logiku za obradu greške, ako je potrebno
+  }
     }
     get();
 }, []);

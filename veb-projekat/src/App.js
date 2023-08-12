@@ -5,6 +5,12 @@ import Login from './components/Login';
 import Registracija from './components/Registracija';
 import Dashboard from './components/Dashboard';
 import Profil from './components/Profil';
+import Admin from './components/Admin';
+import Navigacija from './components/Navigacija';
+import Verifikacija from './components/Verifikacija';
+import CekanjeVerifikacije from './components/CekanjeVerifikacije';
+import RegistracijaOdobrena from './components/RegistracijaOdobrena';
+import CekanjeRegistracije from './components/CekanjeRegistracije';
 
 function App() {
   return (
@@ -15,6 +21,13 @@ function App() {
         <Route path="/registracija" element={<Registracija />} />
         <Route path="/profil/:id" element={<Profil />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/korisnici" element={<Admin />} />
+        <Route path="/navigacija" element={<Navigacija />} />
+        <Route path="/verifikacija" element={<Verifikacija />} />
+        <Route path="/cekanjeVerifikacije" element={<CekanjeVerifikacije />} />
+        <Route path="/registracijaOdobrena" element={<RegistracijaOdobrena />} />
+        <Route path="/cekanjeOdobrenjaRegistracije" element={<CekanjeRegistracije />} />
+        
       </Routes>
     </BrowserRouter>
   );
