@@ -9,9 +9,10 @@ namespace ProjekatVeb2.Interfaces.IServices
         Task<Artikal> PreuzmiArtikalPoId(int id);
         Task<IEnumerable<Artikal>> PretraziArtiklePoNazivu(string naziv);
         Task<IEnumerable<Artikal>> PretraziArtiklePoCijeni(int minCijena, int maxCijena);
-        Task DodajNoviArtikal(KreirajArtikalDTO  artikalDto);
+        Task DodajNoviArtikal(KreirajArtikalDTO artikalDto);
         Task AzurirajArtikal(IzmijeniArtikalDTO izmijeniArtikalDto);
         Task<bool> ObrisiArtikal(int id);
+        Task<IEnumerable<Artikal>> DobaviArtiklePorudzbine(int porudzbinaId);
         Task<IEnumerable<Artikal>> DohvatiArtikleProdavca(int prodavacId);
 
 

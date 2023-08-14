@@ -9,17 +9,19 @@ namespace ProjekatVeb2.Services
     public class ArtikalService : IArtikalService
 
     {
-        private readonly IArtikalRepository _artikalRepository;
-        private readonly IKorisnikRepository _korisnikRepositry;
+        private readonly IArtikalRepository _artikalRepozitorijum;
+        private readonly IKorisnikRepository _korisnikRepozitorijum;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IPorudzbinaArtikalRepositroy _porudzbinaArtikalRepozitorijum;
 
-        public ArtikalService(IArtikalRepository artikalRepository, IKorisnikRepository korisnikRepositry, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public ArtikalService(IArtikalRepository artikalRepozitorijum, IKorisnikRepository korisnikRepozitorijum, IMapper mapper, IHttpContextAccessor httpContextAccessor, IPorudzbinaArtikalRepositroy porudzbinaArtikalRepozitorijum)
         {
-            _artikalRepository = artikalRepository;
-            _korisnikRepositry = korisnikRepositry;
+            _artikalRepozitorijum = artikalRepozitorijum;
+            _korisnikRepozitorijum = korisnikRepozitorijum;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            _porudzbinaArtikalRepozitorijum = porudzbinaArtikalRepozitorijum;
         }
 
         public async Task DodajNoviArtikal(KreirajArtikalDTO kreirajArtikalDto)
@@ -34,7 +36,7 @@ namespace ProjekatVeb2.Services
             {
                 throw new Exception("Nije moguće pretvoriti ID korisnika u broj.");
             }
-            bool artikalPostoji = await _artikalRepository.ArtikalPostojiPoNazivu(kreirajArtikalDto.Naziv);
+            bool artikalPostoji = await _artikalRepozitorijum.ArtikalPostojiPoNazivu(kreirajArtikalDto.Naziv);
             if (artikalPostoji)
             {
                 throw new Exception("Artikal sa istim nazivom vec postoji");
@@ -44,7 +46,7 @@ namespace ProjekatVeb2.Services
                 throw new Exception("Cijena artikla mora biti pozitivan broj");
             }
 
-            var korisnik = await _korisnikRepositry.KorisnikNaOsnovuId(id);
+            var korisnik = await _korisnikRepozitorijum.KorisnikNaOsnovuId(id);
 
             Artikal artikal = _mapper.Map<Artikal>(kreirajArtikalDto);
 
@@ -58,15 +60,15 @@ namespace ProjekatVeb2.Services
 
             artikal.KorisnikId = id;
             artikal.Korisnik = korisnik;
-            await _artikalRepository.DodajArtikal(artikal);
+            await _artikalRepozitorijum.DodajArtikal(artikal);
         }
 
         public async Task<bool> ObrisiArtikal(int id)
         {
-            var artikal = await _artikalRepository.ArtikalNaOsnovuId(id);
+            var artikal = await _artikalRepozitorijum.ArtikalNaOsnovuId(id);
             if (artikal != null)
             {
-                await _artikalRepository.ObrisiArtikal(id);
+                await _artikalRepozitorijum.ObrisiArtikal(id);
                 return true;
             }
             else
@@ -77,34 +79,48 @@ namespace ProjekatVeb2.Services
 
         public async Task<IEnumerable<Artikal>> PretraziArtiklePoCijeni(int minCijena, int maxCijena)
         {
-            return await _artikalRepository.ArtikalNaOsnovuCijene(minCijena, maxCijena);
+            return await _artikalRepozitorijum.ArtikalNaOsnovuCijene(minCijena, maxCijena);
         }
 
         public async Task<IEnumerable<Artikal>> PretraziArtiklePoNazivu(string naziv)
         {
-            bool artikalPostoji = await _artikalRepository.ArtikalPostojiPoNazivu(naziv);
+            bool artikalPostoji = await _artikalRepozitorijum.ArtikalPostojiPoNazivu(naziv);
             if (!artikalPostoji)
             {
                 return Enumerable.Empty<Artikal>();
             }
 
-            return await _artikalRepository.ArtikalNaOsnovuNaziva(naziv);
+            return await _artikalRepozitorijum.ArtikalNaOsnovuNaziva(naziv);
         }
 
         public async Task<Artikal> PreuzmiArtikalPoId(int id)
         {
-            return await _artikalRepository.ArtikalNaOsnovuId(id);
+            return await _artikalRepozitorijum.ArtikalNaOsnovuId(id);
         }
 
         public async Task<IEnumerable<Artikal>> PreuzmiSveArtikle()
         {
-            return await _artikalRepository.SviArtikli();
+            return await _artikalRepozitorijum.SviArtikli();
+        }
+
+        public async Task<IEnumerable<Artikal>> DobaviArtiklePorudzbine(int porudzbinaId)
+        {
+            var listaPorudzbinaArtikal = await _porudzbinaArtikalRepozitorijum.PorudzbinaArtikalNaOsnovuPorudzbinaId(porudzbinaId);
+            var listaArtikala = new List<Artikal>();
+
+            foreach (var porArt in listaPorudzbinaArtikal)
+            {
+                var artikal = await _artikalRepozitorijum.ArtikalNaOsnovuId(porArt.ArtikalID);
+                listaArtikala.Add(artikal);
+            }
+
+            return listaArtikala;
         }
 
 
         public async Task<IEnumerable<Artikal>> DohvatiArtikleProdavca(int prodavacId)
         {
-            return await _artikalRepository.SviArtikliProdavca(prodavacId);
+            return await _artikalRepozitorijum.SviArtikliProdavca(prodavacId);
         }
 
         public async Task AzurirajArtikal(IzmijeniArtikalDTO izmijeniArtikalDto)
@@ -120,7 +136,7 @@ namespace ProjekatVeb2.Services
                 throw new Exception("Cijena mora biti veca od 0");
             }
 
-            Artikal postojeciArtikal = await _artikalRepository.ArtikalNaOsnovuId(izmijeniArtikalDto.IdArtikla);
+            Artikal postojeciArtikal = await _artikalRepozitorijum.ArtikalNaOsnovuId(izmijeniArtikalDto.IdArtikla);
             if (postojeciArtikal == null)
             {
                 throw new Exception("Artikal ne postoji.");
@@ -148,8 +164,7 @@ namespace ProjekatVeb2.Services
                 throw new Exception("Vec postoji u bazi artikal sa tim  imenom");
             }
 
-            await _artikalRepository.AzurirajArtikal(postojeciArtikal);
+            await _artikalRepozitorijum.AzurirajArtikal(postojeciArtikal);
         }
-
     }
 }

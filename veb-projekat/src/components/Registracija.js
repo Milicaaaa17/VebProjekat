@@ -23,8 +23,8 @@ const Registracija = () => {
   const navigate = useNavigate();
 
     const enumeracija = {
-    Prodavac: 1,
-    Kupac: 2,
+    Kupac: 1,
+    Prodavac: 2,
   }
 
   const handleSubmit = async (event) => {
@@ -153,8 +153,9 @@ const Registracija = () => {
         <label>Tip:</label>
         <select name="tip" value={tip} onChange={(e) => setTip(e.target.value)}>
           <option value="">Odaberi tip</option>
-          <option value="Prodavac">Prodavac</option>
+         
           <option value="Kupac">Kupac</option>
+          <option value="Prodavac">Prodavac</option>
         </select>
         </div>
       

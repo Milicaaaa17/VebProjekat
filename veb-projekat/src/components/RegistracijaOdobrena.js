@@ -19,11 +19,11 @@ const Verifikacija = () => {
   const mapirajUlogu = (uloga) => {
     switch (uloga) {
       case 0:
-        return 'Admin';
+        return 'Administrator';
       case 1:
-        return 'Prodavac';
-      case 2:
         return 'Kupac';
+      case 2:
+        return 'Prodavac';
       default:
         return '';
     }
@@ -32,9 +32,9 @@ const Verifikacija = () => {
   const mapirajStatus = (status) => {
     switch (status) {
       case 0:
-        return 'Cekanje';
+        return 'UObradi';
       case 1:
-        return 'Prihvacen';
+        return 'Odobren';
       case 2:
         return 'Odbijen';
       default:

@@ -99,6 +99,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IKorisnikRepository, KorisnikRepository>();
 builder.Services.AddScoped<IArtikalRepository, ArtikalRepository>();
 builder.Services.AddScoped<IPorudzbinaRepository, PorudzbinaRepository>();
+builder.Services.AddScoped<IPorudzbinaArtikalRepositroy, PorudzbinaArtikalRepository>();
 
 // Dodajte vaše servise
 builder.Services.AddScoped<IKorisnikService, KorisnikService>();
@@ -160,6 +161,9 @@ var mapperConfig = new MapperConfiguration(cfg =>
     cfg.CreateMap<Porudzbina, PorudzbinaDTO>().ReverseMap();
     cfg.CreateMap<Porudzbina, KreirajPorudzbinuDTO>().ReverseMap();
     cfg.CreateMap<Korisnik, IzmjenaProfilaDTO>().ReverseMap(); 
+    cfg.CreateMap<PorudzbinaArtikalDto, PoruzdbinaArtikal>().ReverseMap();
+    cfg.CreateMap<PoruzdbinaArtikal, KreirajPorudzbinaArtikalDto>().ReverseMap();
+
 
     //za sliku 
     cfg.CreateMap<IFormFile, byte[]>().ConvertUsing((file, _, context) =>

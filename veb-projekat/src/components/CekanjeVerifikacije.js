@@ -30,9 +30,9 @@ const CekanjeVerifikacije = () => {
       case 0:
         return 'Administrator';
       case 1:
-        return 'Prodavac';
-      case 2:
         return 'Kupac';
+      case 2:
+        return 'Prodavac';
       default:
         return '';
     }

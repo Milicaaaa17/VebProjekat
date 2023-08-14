@@ -8,32 +8,35 @@ namespace ProjekatVeb2.Repository
 {
     public class ArtikalRepository : IArtikalRepository
     {
-        private readonly ContextDB _contextDB;
+        
+        private readonly ContextDB _db;
 
-        public ArtikalRepository(ContextDB contextDB)
+        public ArtikalRepository(ContextDB db)
         {
-            _contextDB = contextDB;
+            _db = db;
         }
 
         public async Task<Artikal> ArtikalNaOsnovuId(int id)
         {
-            return await _contextDB.Artikli.FindAsync(id);
+            return await _db.Artikli.FindAsync(id);
         }
+
+
 
         public async Task<IEnumerable<Artikal>> ArtikalNaOsnovuNaziva(string naziv)
         {
-            return await _contextDB.Artikli.Where(a => a.Naziv.Contains(naziv)).ToListAsync();
+            return await _db.Artikli.Where(a => a.Naziv.Contains(naziv)).ToListAsync();
         }
 
-        public async Task<IEnumerable<Artikal>> ArtikalNaOsnovuCijene(double minCijena, double maxCijena)
+        public async Task<IEnumerable<Artikal>> ArtikalNaOsnovuCijene(int minCijena, int maxCijena)
         {
-            return await _contextDB.Artikli.Where(a => a.Cijena >= minCijena && a.Cijena <= maxCijena).ToListAsync();
+            return await _db.Artikli.Where(a => a.Cijena >= minCijena && a.Cijena <= maxCijena).ToListAsync();
         }
 
         public async Task AzurirajArtikal(Artikal artikal)
         {
-            _contextDB.Entry(artikal).State = EntityState.Modified;
-            await _contextDB.SaveChangesAsync();
+            _db.Update(artikal);
+            await _db.SaveChangesAsync();
         }
 
         public async Task DodajArtikal(Artikal artikal)
@@ -41,53 +44,52 @@ namespace ProjekatVeb2.Repository
             if (artikal == null)
             {
                 throw new ArgumentNullException(nameof(artikal), "Artikal ne može biti null.");
+
             }
-            _contextDB.Artikli.Add(artikal);
-            await _contextDB.SaveChangesAsync();
+            _db.Artikli.Add(artikal);
+            await _db.SaveChangesAsync();
         }
 
         public async Task ObrisiArtikal(int id)
         {
-            var artikal = await _contextDB.Artikli.FindAsync(id);
+            var artikal = await _db.Artikli.FindAsync(id);
             if (artikal != null)
             {
-                _contextDB.Artikli.Remove(artikal);
-                await _contextDB.SaveChangesAsync();
+                _db.Artikli.Remove(artikal);
+                await _db.SaveChangesAsync();
             }
         }
 
         public async Task<IEnumerable<Artikal>> SviArtikli()
         {
-            return await _contextDB.Artikli.ToListAsync();
+            return await _db.Artikli.ToListAsync();
         }
 
         public async Task<bool> ArtikalPostoji(int id)
         {
-            return await _contextDB.Artikli.AnyAsync(a => a.IdArtikla == id);
+            return await _db.Artikli.AnyAsync(a => a.IdArtikla == id);
         }
 
         public async Task<bool> ArtikalPostojiPoNazivu(string naziv)
         {
-            return await _contextDB.Artikli.AnyAsync(a => a.Naziv == naziv);
+            return await _db.Artikli.AnyAsync(a => a.Naziv == naziv);
         }
-
-       
 
         public async Task AzurirajKolicinuArtikla(int artikalId, int novaKolicina)
         {
-            var artikal = await _contextDB.Artikli.FindAsync(artikalId);
+            var artikal = await _db.Artikli.FindAsync(artikalId);
             if (artikal == null)
             {
                 throw new Exception("Artikal sa datim ID-em ne postoji.");
             }
 
             artikal.Kolicina = novaKolicina;
-            await _contextDB.SaveChangesAsync();
+            await _db.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Artikal>> SviArtikliProdavca(int prodavacId)
         {
-            return await _contextDB.Artikli.Where(a => a.KorisnikId == prodavacId).ToListAsync();
+            return await _db.Artikli.Where(a => a.KorisnikId == prodavacId).ToListAsync();
         }
     }
 }

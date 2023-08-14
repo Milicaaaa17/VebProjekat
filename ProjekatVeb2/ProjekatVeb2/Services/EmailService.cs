@@ -30,7 +30,7 @@ namespace ProjekatVeb2.Services
         {
 
             var emailMessage = new MimeMessage();
-            emailMessage.From.Add(MailboxAddress.Parse("milicar.506@outlook.com"));
+            emailMessage.From.Add(MailboxAddress.Parse("milica.r506@outlook.com"));
 
             foreach (var recipient in message.To)
             {
@@ -41,6 +41,8 @@ namespace ProjekatVeb2.Services
 
             var bodyBuilder = new BodyBuilder { HtmlBody = $"<h2 style='color:red;'>{message.Content}</h2>" };
             emailMessage.Body = bodyBuilder.ToMessageBody();
+
+
             return emailMessage;
         }
 
@@ -49,7 +51,7 @@ namespace ProjekatVeb2.Services
 
             using var client = new SmtpClient();
             client.Connect("smtp-mail.outlook.com", 587, SecureSocketOptions.StartTls);
-            client.Authenticate("milicar.506@outlook.com", "jecajana");
+            client.Authenticate("milica.r506@outlook.com", "jecajana");
 
             client.Send(mailMessage);
 

@@ -26,9 +26,9 @@ const mapirajUlogu = (tip) => {
     case 0:
       return 'Administrator';
     case 1:
-      return 'Prodavac';
-    case 2:
       return 'Kupac';
+    case 2:
+      return 'Prodavac';
     default:
       return '';
   }
@@ -48,6 +48,7 @@ const mapirajUlogu = (tip) => {
             <th>Adresa</th>
             <th>Datum Rodjenja</th>
             <th>Uloga</th>
+            
             <th>Slika</th>
             
             
@@ -67,6 +68,7 @@ const mapirajUlogu = (tip) => {
               <td>{korisnik.adresa}</td>
               <td>{korisnik.datumRodjenja}</td>
               <td>{mapirajUlogu(korisnik.tip)}</td>
+             
               <td>
             {korisnik.slika && (
               <img
