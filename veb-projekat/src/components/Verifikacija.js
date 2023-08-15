@@ -29,8 +29,8 @@ const Verifikacija = () => {
   }, []);
 
 
-  const mapirajUlogu = (uloga) => {
-    switch (uloga) {
+  const mapirajUlogu = (tip) => {
+    switch (tip) {
       case 0:
         return 'Admin';
       case 1:
@@ -45,11 +45,11 @@ const Verifikacija = () => {
   const mapirajStatus = (status) => {
     switch (status) {
       case 0:
-        return 'UObradi';
-      case 1:
         return 'Odobren';
-      case 2:
+      case 1:
         return 'Odbijen';
+      case 2:
+        return 'UObradi';
       default:
         return '';
     }
@@ -60,12 +60,12 @@ const Verifikacija = () => {
       <table>
         <thead>
         <tr>
-            <th>ID</th>
+            <th>id</th>
             <th>Korisničko Ime</th>
             <th>Email</th>
             <th>Ime</th>
             <th>Prezime</th>
-            <th>Uloga</th>
+            <th>tip</th>
             <th>Adresa</th>
             <th>Datum Rodjenja</th>
             <th>Status verifikacije</th>
@@ -80,7 +80,7 @@ const Verifikacija = () => {
               <td>{prodavac.email}</td>
               <td>{prodavac.ime}</td>
               <td>{prodavac.prezime}</td>
-              <td>{mapirajUlogu(prodavac.uloga)}</td>
+              <td>{mapirajUlogu(prodavac.tip)}</td>
               <td>{prodavac.adresa}</td>
               <td>{prodavac.datumRodjenja}</td>
               <td>{mapirajStatus(prodavac.statusVerifikacije)}</td>
@@ -93,6 +93,7 @@ const Verifikacija = () => {
               />
             )}
           </td>
+         
             </tr>
           ))}
         </tbody>
@@ -102,12 +103,12 @@ const Verifikacija = () => {
       <table>
         <thead>
         <tr>
-            <th>ID</th>
+            <th>id</th>
             <th>Korisničko Ime</th>
             <th>Email</th>
             <th>Ime</th>
             <th>Prezime</th>
-            <th>Uloga</th>
+            <th>tip</th>
             <th>Adresa</th>
             <th>Datum Rodjenja</th>
             <th>Status verifikacije</th>
@@ -122,7 +123,7 @@ const Verifikacija = () => {
               <td>{prodavac1.email}</td>
               <td>{prodavac1.ime}</td>
               <td>{prodavac1.prezime}</td>
-              <td>{mapirajUlogu(prodavac1.uloga)}</td>
+              <td>{mapirajUlogu(prodavac1.tip)}</td>
               <td>{prodavac1.adresa}</td>
               <td>{prodavac1.datumRodjenja}</td>
               <td>{mapirajStatus(prodavac1.statusVerifikacije)}</td>

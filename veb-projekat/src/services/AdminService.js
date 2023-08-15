@@ -22,6 +22,7 @@ export const kreirajArtikal = async (artikal) => {
     const token = localStorage.getItem('token');
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     return await axios.get(`${baseUrl}/admin/sviverifikovaniprodavci`);
+    
   };
 
   export const getOdbijeniProdavci = async () => {
@@ -50,15 +51,17 @@ export const kreirajArtikal = async (artikal) => {
   };
 
 
-  
   export const prihvatiRegistraciju = async (id) => {
     try {
       const token = localStorage.getItem('token');
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      const response = await axios.post(`${baseUrl}/admin/registracije/${id}/prihvati-verifikaciju`);
+      const url = `${baseUrl}/admin/registracije/${id}/prihvati-verifikaciju`;
+      console.log('Prihvatanje registracije:', url); // Dodatni log
+      const response = await axios.post(url);
+      console.log('Prihvatanje odgovor:', response.data); // Dodatni log
       return response.data;
     } catch (error) {
-      console.error(error);
+      console.error('Greška prilikom prihvatanja registracije prodavca:', error);
       throw new Error('Greška prilikom prihvatanja registracije prodavca.');
     }
   };
@@ -67,13 +70,17 @@ export const kreirajArtikal = async (artikal) => {
     try {
       const token = localStorage.getItem('token');
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      const response = await axios.post(`${baseUrl}/admin/registracije/${id}/odbij-verifikaciju`);
+      const url = `${baseUrl}/admin/registracije/${id}/odbij-verifikaciju`;
+      console.log('Odbijanje registracije:', url); // Dodatni log
+      const response = await axios.post(url);
+      console.log('Odbijanje odgovor:', response.data); // Dodatni log
       return response.data;
     } catch (error) {
-      console.error(error);
+      console.error('Greška prilikom odbijanja registracije prodavca:', error);
       throw new Error('Greška prilikom odbijanja registracije prodavca.');
     }
   };
+  
 
   export const odobrenaRegistracija = async (id) => {
     try {
@@ -99,14 +106,14 @@ export const kreirajArtikal = async (artikal) => {
     }
   };
 
-  export const getKorisnikPoId = async (id) => {
+  export const getKorisnikPoid = async (id) => {
     try {
       const token = localStorage.getItem('token');
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       const response = await axios.get(`${baseUrl}/korisnik/${id}`);
       return response.data;
     } catch (error) {
-      console.error('Greška prilikom dobijanja korisnika po ID-u:', error);
+      console.error('Greška prilikom dobijanja korisnika po id-u:', error);
       throw error;
     }
   };

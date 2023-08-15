@@ -39,8 +39,8 @@ namespace ProjekatVeb2.JWT
 
             var claims = new[]
             {
-                new Claim("Id", korisnik.IdKorisnika.ToString()),
-                new Claim("StatusVerifikacije", korisnik.VerifikacijaKorisnika.ToString()),
+                new Claim("Id", korisnik.Id.ToString()),
+                new Claim("StatusVerifikacije", korisnik.StatusVerifikacije.ToString()),
                 //new Claim("Lozinka", korisnik.Lozinka),
                 new Claim(ClaimTypes.Role, korisnik.Tip.ToString())
             };

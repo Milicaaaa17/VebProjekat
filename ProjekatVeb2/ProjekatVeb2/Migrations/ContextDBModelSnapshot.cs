@@ -59,11 +59,11 @@ namespace ProjekatVeb2.Migrations
 
             modelBuilder.Entity("ProjekatVeb2.Models.Korisnik", b =>
                 {
-                    b.Property<int>("IdKorisnika")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdKorisnika"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Adresa")
                         .IsRequired()
@@ -99,18 +99,18 @@ namespace ProjekatVeb2.Migrations
                     b.Property<byte[]>("Slika")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("Tip")
+                    b.Property<string>("StatusVerifikacije")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("VerifikacijaKorisnika")
+                    b.Property<string>("Tip")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Verifikovan")
                         .HasColumnType("bit");
 
-                    b.HasKey("IdKorisnika");
+                    b.HasKey("Id");
 
                     b.HasIndex("KorisnickoIme")
                         .IsUnique();

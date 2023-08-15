@@ -4,7 +4,7 @@ namespace ProjekatVeb2.DTO
 {
     public class KorisnikDTO
     {
-        public int IdKorisnika { get; set; }
+        public int Id { get; set; }
         public string KorisnickoIme { get; set; }
         public string Email { get; set; }
         public string Lozinka { get; set; }

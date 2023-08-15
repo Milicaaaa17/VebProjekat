@@ -40,14 +40,14 @@ const mapirajUlogu = (tip) => {
       <table>
         <thead>
           <tr>
-            <th>ID</th>
+            <th>id</th>
             <th>Korisničko Ime</th>
             <th>Email</th>
             <th>Ime</th>
             <th>Prezime</th>
             <th>Adresa</th>
             <th>Datum Rodjenja</th>
-            <th>Uloga</th>
+            <th>Tip</th>
             
             <th>Slika</th>
             

@@ -8,7 +8,7 @@ import { getKorisnikPoId } from '../services/AdminService';
 const Dashboard = () => {
   const token = localStorage.getItem('token');
   const decodedToken = jwtDecode(token);
-  const uloga = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+  const tip = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
   const id = decodedToken['Id'];
   const navigate = useNavigate();
   const [korisnik, setKorisnik] = useState(null);
@@ -17,6 +17,7 @@ const Dashboard = () => {
     const getKorisnik = async () => {
       try {
         const response = await getKorisnikPoId(id);
+        
         console.log(response);
        
         setKorisnik(response);
@@ -25,10 +26,10 @@ const Dashboard = () => {
       }
     };
   
-    if (uloga === 'Prodavac') {
+    if (tip === 'Prodavac') {
       getKorisnik();
     }
-  }, [id, uloga]);
+  }, [id, tip]);
 
  
   
@@ -42,7 +43,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <ul className="dashboard-list">
-        {uloga === 'Prodavac' &&  korisnik && korisnik.statusVerifikacije === 1 && korisnik.verifikovan &&(
+        {tip === 'Prodavac' &&  korisnik && korisnik.statusVerifikacije === 0 && korisnik.verifikovan &&(
           <>
            <div className="logout-container">
         <button className="logout-button" onClick={handleLogout}>Odjava</button>
@@ -64,7 +65,7 @@ const Dashboard = () => {
            </li>
           </>
         )}
-           {uloga === 'Prodavac' &&  korisnik && korisnik.statusVerifikacije === 0  &&(
+           {tip === 'Prodavac' &&  korisnik && korisnik.statusVerifikacije === 2  &&(
           <>
            <h1>Vas profil nije aktivan! Sacekajte verifikaciju.</h1>
            <li className="dashboard-list-item">
@@ -75,7 +76,7 @@ const Dashboard = () => {
       </div>
           </>
         )}
-        {uloga === 'Prodavac' &&  korisnik && korisnik.statusVerifikacije === 2  &&(
+        {tip === 'Prodavac' &&  korisnik && korisnik.statusVerifikacije === 1  &&(
           <>
            <h1>Verifikacija odbijena! </h1>
            <li className="dashboard-list-item">
@@ -84,7 +85,7 @@ const Dashboard = () => {
             <Link to="/" className="dashboard-link">Pocetna</Link>
           </>
         )}
-        {uloga === 'Kupac' && (
+        {tip === 'Kupac' && (
           <>
            <div className="logout-container">
         <button className="logout-button" onClick={handleLogout}>Odjava</button>
@@ -100,7 +101,7 @@ const Dashboard = () => {
            </li>
           </>
         )}
-        {uloga === 'Administrator' && (
+        {tip === 'Administrator' && (
           <>
            <div className="logout-container">
         <button className="logout-button" onClick={handleLogout}>Odjava</button>

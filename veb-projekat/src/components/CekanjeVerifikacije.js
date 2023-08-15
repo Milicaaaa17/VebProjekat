@@ -25,10 +25,10 @@ const CekanjeVerifikacije = () => {
           setProdavci(resp.data);
       }
 
-  const mapirajUlogu = (uloga) => {
-    switch (uloga) {
+  const mapirajUlogu = (tip) => {
+    switch (tip) {
       case 0:
-        return 'Administrator';
+        return 'Admin';
       case 1:
         return 'Kupac';
       case 2:
@@ -41,37 +41,39 @@ const CekanjeVerifikacije = () => {
   const mapirajStatus = (status) => {
     switch (status) {
       case 0:
-        return 'UObradi';
-      case 1:
         return 'Odobren';
-      case 2:
+      case 1:
         return 'Odbijen';
+      case 2:
+        return 'UObradi';
       default:
         return '';
     }
   };
-
-  const handleOdbij = async (prodavacId) => {
+  const handleOdbij = async (prodavacid) => {
     try {
-      const response = await odbijRegistracijuProdavca(prodavacId);
-      console.log(response); 
-      setProdavci(prodavci.filter((prodavac) => prodavac.id !== prodavacId));
+      console.log('Odbij: prodavacid =', prodavacid); // Dodatni log
+      const response = await odbijRegistracijuProdavca(prodavacid);
+      console.log('Odbij odgovor:', response); // Dodatni log
+      setProdavci(prodavci.filter((prodavac) => prodavac.id !== prodavacid));
       azurirani();
     } catch (error) {
-      console.error(error);
+      console.error('Greška prilikom odbijanja registracije prodavca:', error);
     }
   };
-
-  const handlePrihvati = async (prodavacId) => {
+  
+  const handlePrihvati = async (prodavacid) => {
     try {
-      const response = await prihvatiRegistraciju(prodavacId);
-      console.log(response);
-      setProdavci(prodavci.filter((prodavac) => prodavac.id !== prodavacId));
+        console.log('Prihvati: prodavacid =', prodavacid); // Dodatni log
+      const response = await prihvatiRegistraciju(prodavacid);
+      console.log('Prihvati odgovor:', response); // Dodatni log
+      setProdavci(prodavci.filter((prodavac) => prodavac.id !== prodavacid));
       azurirani();
     } catch (error) {
-      console.error(error);
+      console.error('Greška prilikom prihvatanja registracije prodavca:', error);
     }
   };
+  
 
 
   return (
@@ -80,12 +82,12 @@ const CekanjeVerifikacije = () => {
       <table>
         <thead>
         <tr>
-            <th>ID</th>
+            <th>id</th>
             <th>Korisničko Ime</th>
             <th>Email</th>
             <th>Ime</th>
             <th>Prezime</th>
-            <th>Uloga</th>
+            <th>tip</th>
             <th>Adresa</th>
             <th>Datum Rodjenja</th>
             <th>Status verifikacije</th>
@@ -101,7 +103,7 @@ const CekanjeVerifikacije = () => {
               <td>{prodavac.email}</td>
               <td>{prodavac.ime}</td>
               <td>{prodavac.prezime}</td>
-              <td>{mapirajUlogu(prodavac.uloga)}</td>
+              <td>{mapirajUlogu(prodavac.tip)}</td>
               <td>{prodavac.adresa}</td>
               <td>{prodavac.datumRodjenja}</td>
               <td>{mapirajStatus(prodavac.statusVerifikacije)}</td>

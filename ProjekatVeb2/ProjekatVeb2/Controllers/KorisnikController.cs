@@ -100,7 +100,7 @@ namespace ProjekatVeb2.Controllers
             var korisnik = await _korisnikService.KorisnikNaOsnovuId(id);
             if (korisnik != null)
             {
-                return Ok(korisnik.VerifikacijaKorisnika.ToString());
+                return Ok(korisnik.StatusVerifikacije.ToString());
             }
             return NotFound("Nije pronadjen");
         }

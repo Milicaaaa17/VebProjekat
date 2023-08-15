@@ -9,10 +9,7 @@ import './Forma.css';
 const Profil = () => {
     const { id } = useParams();
     const [korisnik, setKorisnik] = useState(null);
-   
-
-
-    const [korisnickoIme, setKorisnickoIme] = useState('');
+   const [korisnickoIme, setKorisnickoIme] = useState('');
     const [email, setEmail] = useState('');
     const [ime, setIme] = useState('');
     const [prezime, setPrezime] = useState('');
@@ -64,8 +61,8 @@ const Profil = () => {
       getStatus();
     }, [id]);
 
-  const mapirajUlogu = (uloga) => {
-    switch (uloga) {
+  const mapirajUlogu = (tip) => {
+    switch (tip) {
       case 0:
         return 'Administrator';
       case 1:
@@ -201,12 +198,12 @@ const Profil = () => {
       <table>
         <thead>
           <tr>
-            <th>ID</th>
+            <th>Id</th>
             <th>Korisničko Ime</th>
             <th>Email</th>
             <th>Ime</th>
             <th>Prezime</th>
-            <th>Uloga</th>
+            <th>Tip</th>
             <th>Adresa</th>
             <th>Datum Rodjenja</th>
             <th>Slika</th>
@@ -219,7 +216,7 @@ const Profil = () => {
             <td>{korisnik.email}</td>
             <td>{korisnik.ime}</td>
             <td>{korisnik.prezime}</td>
-            <td>{mapirajUlogu(korisnik.uloga)}</td>
+            <td>{mapirajUlogu(korisnik.tip)}</td>
             <td>{korisnik.adresa}</td>
             <td>{korisnik.datumRodjenja}</td>
             <td>

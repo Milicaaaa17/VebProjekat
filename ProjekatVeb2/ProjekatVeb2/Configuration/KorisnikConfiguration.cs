@@ -9,12 +9,12 @@ namespace ProjekatVeb2.Configuration
     {
         public void Configure(EntityTypeBuilder<Korisnik> builder)
         {
-            builder.HasKey(k => k.IdKorisnika);
-            builder.Property(k => k.IdKorisnika).ValueGeneratedOnAdd();
+            builder.HasKey(k => k.Id);
+            builder.Property(k => k.Id).ValueGeneratedOnAdd();
             builder.Property(k => k.KorisnickoIme).IsRequired();
             builder.HasIndex(k => k.KorisnickoIme).IsUnique();
             builder.Property(k => k.Tip).HasConversion(new EnumToStringConverter<TipKorisnika>());
-            builder.Property(k => k.VerifikacijaKorisnika).HasConversion(new EnumToStringConverter<StatusVerifikacije>());
+            builder.Property(k => k.StatusVerifikacije).HasConversion(new EnumToStringConverter<StatusVerifikacije>());
 
             builder.HasMany(k => k.Porudzbine)
            .WithOne(p => p.Korisnik)

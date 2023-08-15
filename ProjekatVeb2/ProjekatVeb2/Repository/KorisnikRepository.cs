@@ -59,7 +59,7 @@ namespace ProjekatVeb2.Repository
 
         public async Task<Korisnik> KorisnikNaOsnovuId(int id)
         {
-            return await _contextDB.Korisnici.FirstOrDefaultAsync(k => k.IdKorisnika == id);
+            return await _contextDB.Korisnici.FirstOrDefaultAsync(k => k.Id == id);
         }
 
         public async Task AzurirajKorisnika(Korisnik korisnik)
@@ -70,7 +70,7 @@ namespace ProjekatVeb2.Repository
 
         public async Task BrisanjeKorisnikaNaOsnovuId(int id)
         {
-            var korisnik = await _contextDB.Korisnici.FirstOrDefaultAsync(k => k.IdKorisnika == id);
+            var korisnik = await _contextDB.Korisnici.FirstOrDefaultAsync(k => k.Id == id);
             if (korisnik != null)
             {
                 _contextDB.Korisnici.Remove(korisnik);
@@ -82,11 +82,11 @@ namespace ProjekatVeb2.Repository
 
         public async Task<bool> AzurirajStatusVerifikacije(int korisnikId, bool verifikovan, StatusVerifikacije statusVerifikacije)
         {
-            var korisnik = await _contextDB.Korisnici.FirstOrDefaultAsync(k => k.IdKorisnika == korisnikId);
+            var korisnik = await _contextDB.Korisnici.FirstOrDefaultAsync(k => k.Id == korisnikId);
             if (korisnik != null && korisnik.Tip == TipKorisnika.Prodavac)
             {
                 korisnik.Verifikovan = verifikovan;
-                korisnik.VerifikacijaKorisnika = statusVerifikacije;
+                korisnik.StatusVerifikacije = statusVerifikacije;
                 await _contextDB.SaveChangesAsync();
                 return true;
             }
@@ -98,14 +98,14 @@ namespace ProjekatVeb2.Repository
 
         public async Task<Korisnik> ProdavacNaOsnovuId(int id)
         {
-            return await _contextDB.Korisnici.FirstOrDefaultAsync(k => k.IdKorisnika == id && k.Tip == TipKorisnika.Prodavac);
+            return await _contextDB.Korisnici.FirstOrDefaultAsync(k => k.Id == id && k.Tip == TipKorisnika.Prodavac);
 
         }
 
         public async Task<IEnumerable<Korisnik>> SviVerifikovaniProdavci()
         {
             var prodavci = await _contextDB.Korisnici
-            .Where(k => k.Tip == TipKorisnika.Prodavac && k.Verifikovan && k.VerifikacijaKorisnika == StatusVerifikacije.Odobren)
+            .Where(k => k.Tip == TipKorisnika.Prodavac && k.Verifikovan && k.StatusVerifikacije == StatusVerifikacije.Odobren)
             .ToListAsync();
             return prodavci;
         }
@@ -113,7 +113,7 @@ namespace ProjekatVeb2.Repository
         public async Task<IEnumerable<Korisnik>> SviProdavciKojiCekajuVerifikaciju()
         {
             var prodavci = await _contextDB.Korisnici
-            .Where(k => k.Tip == TipKorisnika.Prodavac && !k.Verifikovan && k.VerifikacijaKorisnika == StatusVerifikacije.UObradi)
+            .Where(k => k.Tip == TipKorisnika.Prodavac && !k.Verifikovan && k.StatusVerifikacije == StatusVerifikacije.UObradi)
             .ToListAsync();
             return prodavci;
         }
@@ -128,18 +128,18 @@ namespace ProjekatVeb2.Repository
             }
             if (korisnik.Tip == TipKorisnika.Administrator)
             {
-                korisnik.VerifikacijaKorisnika = StatusVerifikacije.Odobren;
+                korisnik.StatusVerifikacije = StatusVerifikacije.Odobren;
                 korisnik.Verifikovan = true;
 
             }
             else if (korisnik.Tip == TipKorisnika.Kupac)
             {
-                korisnik.VerifikacijaKorisnika = StatusVerifikacije.Odobren;
+                korisnik.StatusVerifikacije = StatusVerifikacije.Odobren;
                 korisnik.Verifikovan = true;
             }
             else
             {
-                korisnik.VerifikacijaKorisnika = StatusVerifikacije.UObradi;
+                korisnik.StatusVerifikacije = StatusVerifikacije.UObradi;
             }
             _contextDB.Korisnici.Add(korisnik);
             await _contextDB.SaveChangesAsync();
@@ -158,7 +158,7 @@ namespace ProjekatVeb2.Repository
         public async Task<IEnumerable<Korisnik>> SviOdbijeniProdavci()
         {
             var prodavci = await _contextDB.Korisnici
-            .Where(k => k.Tip == TipKorisnika.Prodavac && k.Verifikovan == false && k.VerifikacijaKorisnika == StatusVerifikacije.Odbijen)
+            .Where(k => k.Tip == TipKorisnika.Prodavac && k.Verifikovan == false && k.StatusVerifikacije == StatusVerifikacije.Odbijen)
             .ToListAsync();
             return prodavci;
         }

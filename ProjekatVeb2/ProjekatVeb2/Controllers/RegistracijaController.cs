@@ -33,11 +33,11 @@ namespace ProjekatVeb2.Controllers
 
             if (registracijaDTO.Tip == TipKorisnika.Kupac || registracijaDTO.Tip == TipKorisnika.Administrator)
             {
-                korisnik.VerifikacijaKorisnika = StatusVerifikacije.Odobren;
+                korisnik.StatusVerifikacije = StatusVerifikacije.Odobren;
             }
             else
             {
-                korisnik.VerifikacijaKorisnika = StatusVerifikacije.UObradi;
+                korisnik.StatusVerifikacije = StatusVerifikacije.UObradi;
             }
 
             Registrovanje rezultat = await _registracijaService.RegistrujKorisnika(registracijaDTO);
