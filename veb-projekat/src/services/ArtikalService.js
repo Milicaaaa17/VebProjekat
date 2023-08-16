@@ -7,9 +7,9 @@ export const getSviArtikli = async () => {
  return await axios.get(`${baseUrl}/artikal/sviArtikli`);
 };
 
-export const getSviArtikliProdavac = async (prodavacid) => {
+export const getSviArtikliProdavac = async (prodavacId) => {
   try {
-    const response = await axios.get(`${baseUrl}/artikal/sviArtikliProdavac/${prodavacid}`);
+    const response = await axios.get(`${baseUrl}/artikal/sviArtikliProdavac/${prodavacId}`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -41,7 +41,7 @@ export const azurirajArtikal = async (id, formData) => {
     }
   };
 
-  export const pronadjiArtikalpoid = async (id) => {
+  export const pronadjiArtikalpoId = async (id) => {
     try {
       const response = await axios.get(`${baseUrl}/artikal/${id}`);
       return response.data;

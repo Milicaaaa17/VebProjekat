@@ -1,10 +1,10 @@
 export class ArtikalModel {
-    constructor(naziv, cijena, kolicina, opis, fotografija) {
+    constructor(naziv, cijena, kolicina, opis, slika) {
         this.naziv = naziv;
         this.cijena = cijena;
         this.kolicina = kolicina;
-        this.cijena = cijena;
-        this.fotografija = fotografija;
+        this.opis = opis;
+        this.slika = slika;
     }
 }
 export default ArtikalModel;

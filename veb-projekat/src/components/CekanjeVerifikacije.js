@@ -50,24 +50,24 @@ const CekanjeVerifikacije = () => {
         return '';
     }
   };
-  const handleOdbij = async (prodavacid) => {
+  const handleOdbij = async (prodavacId) => {
     try {
-      console.log('Odbij: prodavacid =', prodavacid); // Dodatni log
-      const response = await odbijRegistracijuProdavca(prodavacid);
+      console.log('Odbij: prodavacId =', prodavacId); // Dodatni log
+      const response = await odbijRegistracijuProdavca(prodavacId);
       console.log('Odbij odgovor:', response); // Dodatni log
-      setProdavci(prodavci.filter((prodavac) => prodavac.id !== prodavacid));
+      setProdavci(prodavci.filter((prodavac) => prodavac.id !== prodavacId));
       azurirani();
     } catch (error) {
       console.error('Greška prilikom odbijanja registracije prodavca:', error);
     }
   };
   
-  const handlePrihvati = async (prodavacid) => {
+  const handlePrihvati = async (prodavacId) => {
     try {
-        console.log('Prihvati: prodavacid =', prodavacid); // Dodatni log
-      const response = await prihvatiRegistraciju(prodavacid);
+        console.log('Prihvati: prodavacId =', prodavacId); // Dodatni log
+      const response = await prihvatiRegistraciju(prodavacId);
       console.log('Prihvati odgovor:', response); // Dodatni log
-      setProdavci(prodavci.filter((prodavac) => prodavac.id !== prodavacid));
+      setProdavci(prodavci.filter((prodavac) => prodavac.id !== prodavacId));
       azurirani();
     } catch (error) {
       console.error('Greška prilikom prihvatanja registracije prodavca:', error);

@@ -8,23 +8,23 @@ import jwtDecode from 'jwt-decode';
 const Artikal = () => {
   const [artikli, setArtikli] = useState([]);
 
-  const [idArtikla, setid] = useState('');
+  const [idArtikla, setId] = useState('');
     const [naziv, setNaziv] = useState('');
     const [cijena, setCijena] = useState('');
     const [kolicina, setKolicina] = useState('');
     const [opis, setOpis] = useState('');
     const [greske, setGreske] = useState([]);
-    const [fotografija, setFotografija] = useState(null);
+    const [slika, setSlika] = useState(null);
     const [uspjesno, setUspjesno] = useState(false);
     
     useEffect(() => {
       const token = localStorage.getItem('token');
       const decodedToken = jwtDecode(token);
-      const prodavacid = decodedToken.id;
+      const prodavacId = decodedToken.Id;
 
       const getArtikli = async () => {
         try {
-          const artikliProdavca = await getSviArtikliProdavac(prodavacid);
+          const artikliProdavca = await getSviArtikliProdavac(prodavacId);
           setArtikli(artikliProdavca);
         } catch (error) {
           console.log('Greška prilikom dohvata artikala:', error);
@@ -38,7 +38,7 @@ const Artikal = () => {
     const { name, value } = event.target;
     switch (name) {
       case 'idArtikla':
-        setid(value);
+        setId(value);
         break;
       case 'naziv':
         setNaziv(value);
@@ -60,7 +60,7 @@ const Artikal = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!naziv || !cijena || !kolicina || !opis || !fotografija) {
+    if (!naziv || !cijena || !kolicina || !opis || !slika) {
       setGreske(['Molimo unesite sve potrebne podatke.']);
       setUspjesno(false);
       return;
@@ -78,7 +78,7 @@ const Artikal = () => {
       return;
     }
 
-    if (!fotografija) {
+    if (!slika) {
       alert('Molimo odaberite sliku.');
       return;
     }
@@ -98,7 +98,7 @@ const Artikal = () => {
       formData.append('cijena', cijena);
       formData.append('kolicina', kolicina);
       formData.append('opis', opis);
-      formData.append('fotografija', fotografija);
+      formData.append('slika', slika);
 
 
       await azurirajArtikal(idArtikla, formData);
@@ -112,7 +112,7 @@ const Artikal = () => {
             cijena,
             kolicina,
             opis,
-            fotografija,
+            slika,
           };
         }
         return artikal;
@@ -120,19 +120,19 @@ const Artikal = () => {
 
       setArtikli(azuriraniArtikli);
 
-      setid('');
+      setId('');
       setNaziv('');
       setCijena('');
       setKolicina('');
       setOpis('');
-      setFotografija(null);
+      setSlika(null);
       setGreske([]);
       setUspjesno(true);
 
       const token = localStorage.getItem('token');
       const decodedToken = jwtDecode(token);
-      const prodavacid = decodedToken.id;
-      const resp = await getSviArtikliProdavac(prodavacid);
+      const prodavacId = decodedToken.Id;
+      const resp = await getSviArtikliProdavac(prodavacId);
       setArtikli(resp);
 
     } catch (error) {
@@ -158,7 +158,7 @@ const Artikal = () => {
       <table>
         <thead>
           <tr>
-            <th>id</th>
+            <th>ID</th>
             <th>Naziv</th>
             <th>Cijena</th>
             <th>Količina</th>
@@ -176,10 +176,10 @@ const Artikal = () => {
               <td>{artikal.kolicina}</td>
               <td>{artikal.opis}</td>
               <td>
-            {artikal.fotografija && (
+            {artikal.slika && (
               <img
-                src={`data:image/jpg;base64,${artikal.fotografija}`}
-                alt="fotografija"
+                src={`data:image/jpg;base64,${artikal.slika}`}
+                alt="slika"
                 style={{ width: '80px', height: '80px' }}
               />
             )}
@@ -196,7 +196,7 @@ const Artikal = () => {
       <div className="forma-container">
       <form onSubmit={handleSubmit}>
       <div>
-          <label htmlFor="idArtikla">id:</label>
+          <label htmlFor="idArtikla">ID:</label>
           <input type="text" id="idArtikla" name="idArtikla" value={idArtikla} onChange={handleChange}/>
           </div>
         <div>
@@ -218,7 +218,7 @@ const Artikal = () => {
 
         <div>
           <label>Slika:</label>
-          <input type="file" accept="image/*" onChange={(e) => setFotografija(e.target.files[0])} />
+          <input type="file" accept="image/*" onChange={(e) => setSlika(e.target.files[0])} />
         </div>
        
         {greske.length > 0 && (

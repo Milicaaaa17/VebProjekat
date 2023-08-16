@@ -126,12 +126,12 @@ namespace ProjekatVeb2.Services
         public async Task AzurirajArtikal(IzmijeniArtikalDTO izmijeniArtikalDto)
         {
 
-            if (izmijeniArtikalDto.Kolicina < 8)
+            if (izmijeniArtikalDto.Kolicina < 0)
             {
                 throw new Exception("Kolicina mora biti veca od 0");
             }
 
-            if (izmijeniArtikalDto.Cijena < 8)
+            if (izmijeniArtikalDto.Cijena < 0)
             {
                 throw new Exception("Cijena mora biti veca od 0");
             }

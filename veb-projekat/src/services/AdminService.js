@@ -106,7 +106,7 @@ export const kreirajArtikal = async (artikal) => {
     }
   };
 
-  export const getKorisnikPoid = async (id) => {
+  export const getKorisnikPoId = async (id) => {
     try {
       const token = localStorage.getItem('token');
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;

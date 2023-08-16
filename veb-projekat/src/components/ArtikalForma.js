@@ -9,7 +9,7 @@ const ArtikalForma = () => {
   const [cijena, setCijena] = useState('');
   const [kolicina, setKolicina] = useState('');
   const [opis, setOpis] = useState('');
-  const [fotografija, setFotografija] = useState(null);
+  const [slika, setSlika] = useState(null);
   const [greske, setGreske] = useState([]);
   const [uspjesno, setUspjesno] = useState(false);
 
@@ -17,7 +17,7 @@ const ArtikalForma = () => {
     event.preventDefault();
   
  
-    if (!naziv || !cijena || !kolicina || !opis || !fotografija) {
+    if (!naziv || !cijena || !kolicina || !opis || !slika) {
       setGreske(['Molimo unesite sve potrebne podatke.']);
       setUspjesno(false);
       return;
@@ -41,7 +41,7 @@ const ArtikalForma = () => {
       return;
     }
 
-    if (!fotografija) {
+    if (!slika) {
       alert('Molimo odaberite sliku.');
       return;
     }
@@ -51,7 +51,7 @@ const ArtikalForma = () => {
     formData.append('cijena', cijena);
     formData.append('kolicina', kolicina);
     formData.append('opis', opis);
-    formData.append('fotografija', fotografija);
+    formData.append('slika', slika);
     
 
 try {
@@ -61,7 +61,7 @@ try {
   setCijena('');
   setKolicina('');
   setOpis('');
-  setFotografija('');
+  setSlika('');
 
   setUspjesno(true);
   setGreske([]);
@@ -95,8 +95,8 @@ try {
           <textarea value={opis}  onChange={(e) => setOpis(e.target.value)}></textarea>
         </div>
         <div>
-          <label>Fotografija:</label>
-          <input type="file" accept="image/*" onChange={(e) => setFotografija(e.target.files[0])}
+          <label>Slika:</label>
+          <input type="file" accept="image/*" onChange={(e) => setSlika(e.target.files[0])}
           />
         </div>
         {greske.length > 0 && (
