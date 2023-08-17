@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { getArtiklePorudzbine } from '../services/PorudzbinaService';
+import { getArtiklePorudzbineProdavca } from '../services/PorudzbinaService';
 import { Link, useParams } from 'react-router-dom';
 
 
 
-const Detalji = () => {
+
+
+const Detalji = ({ match }) => {
   const [artikli, setArtikli] = useState([]);
-  const { id } = useParams(); 
+  const { id } = useParams(); // Preuzimanje porudžbine ID iz rute
 
 
 
   useEffect(() => {
     const get = async () => {
       try {
-        const resp = await getArtiklePorudzbine(id); 
+        const resp = await getArtiklePorudzbineProdavca(id);
         console.log(resp);
-        console.log(resp.data);
+        console.log(resp);
         setArtikli(resp); 
        
         

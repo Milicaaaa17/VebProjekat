@@ -18,7 +18,7 @@ import OtkaziPorudzbinu from './components/OtkaziPorudzbinu';
 import MojePorudzbine from './components/MojePorudzbine';
 import NovePorudzbine from './components/NovePorudzbine';
 import Detalji from './components/Detalji';
-
+import DetaljiProdavca from './components/DetaljiProdavca';
 
 
 function App() {
@@ -43,7 +43,8 @@ function App() {
         <Route path="/mojePorudzbine/:id" element={<MojePorudzbine />} />
         <Route path="/novePorudzbine/:id" element={<NovePorudzbine />} />
         <Route path="/detalji/:id" element={<Detalji />} />
-       
+        <Route path="/detaljiProdavca/:id" element={<DetaljiProdavca />} />
+  
         
       </Routes>
     </BrowserRouter>

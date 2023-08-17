@@ -177,9 +177,9 @@ const PorudzbinaForma = () => {
               <td>{artikal.kolicina}</td>
               <td>{artikal.opis}</td>
               <td>
-            {artikal.fotografija && (
+            {artikal.slika && (
               <img
-                src={`data:image/jpg;base64,${artikal.fotografija}`}
+                src={`data:image/jpg;base64,${artikal.slika}`}
                 alt="slika"
                 style={{ width: '30px', height: '30px' }}
               />
