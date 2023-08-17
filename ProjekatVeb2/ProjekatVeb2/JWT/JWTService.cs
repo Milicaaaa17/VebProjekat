@@ -10,21 +10,19 @@ namespace ProjekatVeb2.JWT
     public class JwtService
     {
         private readonly JwtSettings _jwtSettings;
-        private readonly ContextDB _db;
+        private readonly ContextDB _contextDB;
         private readonly IConfiguration _configuration;
 
-
-        public JwtService(JwtSettings jwtSettings, ContextDB db, IConfiguration configuration)
+        public JwtService(JwtSettings jwtSettings, ContextDB contextDB, IConfiguration configuration)
         {
             _jwtSettings = jwtSettings;
-            _db = db;
+            _contextDB = contextDB;
             _configuration = configuration;
         }
 
-
         public string MakeAToken(LoginDTO loginDto)
         {
-            var korisnik = _db.Korisnici.FirstOrDefault(k => k.Email == loginDto.Email);
+            var korisnik = _contextDB.Korisnici.FirstOrDefault(k => k.Email == loginDto.Email);
 
 
             byte[] keyBytes = Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]);

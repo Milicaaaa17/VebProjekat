@@ -7,69 +7,69 @@ namespace ProjekatVeb2.Repository
 {
     public class PorudzbinaRepository : IPorudzbinaRepository
     {
-        private readonly ContextDB _db;
+        private readonly ContextDB _contextDB;
 
-        public PorudzbinaRepository(ContextDB db)
+        public PorudzbinaRepository(ContextDB contextDB)
         {
-            _db = db;
+            _contextDB = contextDB;
         }
 
         public async Task AzurirajPorudzbinu(Porudzbina porudzbina)
         {
-            _db.Entry(porudzbina).State = EntityState.Modified;
-            await _db.SaveChangesAsync();
+            _contextDB.Entry(porudzbina).State = EntityState.Modified;
+            await _contextDB.SaveChangesAsync();
         }
 
         public async Task<Porudzbina> PorudzbinaNaOsnovuId(int id)
         {
-            return await _db.Porudzbine.FindAsync(id);
+            return await _contextDB.Porudzbine.FindAsync(id);
         }
 
 
         public async Task DodajPorudzbinu(Porudzbina porudzbina)
         {
-            await _db.Porudzbine.AddAsync(porudzbina);
-            await _db.SaveChangesAsync();
+            await _contextDB.Porudzbine.AddAsync(porudzbina);
+            await _contextDB.SaveChangesAsync();
         }
         public async Task ObrisiPorudzbinu(int id)
         {
-            var porudzbina = await _db.Porudzbine.FindAsync(id);
+            var porudzbina = await _contextDB.Porudzbine.FindAsync(id);
             if (porudzbina != null)
             {
-                _db.Porudzbine.Remove(porudzbina);
-                await _db.SaveChangesAsync();
+                _contextDB.Porudzbine.Remove(porudzbina);
+                await _contextDB.SaveChangesAsync();
             }
 
         }
 
         public async Task<bool> PorudzbinaPostoji(int id)
         {
-            return await _db.Porudzbine.AnyAsync(a => a.IdPorudzbine == id);
+            return await _contextDB.Porudzbine.AnyAsync(a => a.IdPorudzbine == id);
         }
 
 
 
         public async Task<List<Porudzbina>> SvePorudzbine()
         {
-            return await _db.Porudzbine.ToListAsync();
+            return await _contextDB.Porudzbine.ToListAsync();
         }
 
         public async Task<List<Porudzbina>> SvePorudzbineKupca(int kupacId)
         {
-            return await _db.Porudzbine
+            return await _contextDB.Porudzbine
             .Where(p => p.KorisnikId == kupacId)
             .ToListAsync();
         }
 
         public async Task UpdatePorudzbina(Porudzbina porudzbina)
         {
-            _db.Porudzbine.Update(porudzbina);
-            await _db.SaveChangesAsync();
+            _contextDB.Porudzbine.Update(porudzbina);
+            await _contextDB.SaveChangesAsync();
         }
 
         public async Task<DateTime> VrijemeDostaveZaPorudzbinu(int idPorudzbine)
         {
-            var porudzbina = await _db.Porudzbine.FindAsync(idPorudzbine);
+            var porudzbina = await _contextDB.Porudzbine.FindAsync(idPorudzbine);
             if (porudzbina != null)
             {
                 return porudzbina.VrijemeDostave;
@@ -82,7 +82,7 @@ namespace ProjekatVeb2.Repository
         {
             DateTime trenutnoVrijeme = DateTime.Now.AddHours(-1);
 
-            return await _db.Porudzbine
+            return await _contextDB.Porudzbine
            .Where(p => p.KorisnikId == kupacId && p.Status != StatusPorudzbine.Otkazana && p.DatumPorudzbine <= trenutnoVrijeme)
            .ToListAsync();
         }
@@ -91,7 +91,7 @@ namespace ProjekatVeb2.Repository
         {
             var trenutnoVriejme = DateTime.Now.AddHours(-1);
 
-            var porudzbine = await _db.PoruzdbinaArtikli
+            var porudzbine = await _contextDB.PoruzdbinaArtikli
                 .Include(pa => pa.Porudzbina)
                 .Where(pa => pa.Artikal.KorisnikId == prodavacId && pa.Porudzbina.Status != StatusPorudzbine.Otkazana && pa.Porudzbina.DatumPorudzbine >= trenutnoVriejme)
                 .Select(pa => pa.Porudzbina)
@@ -107,7 +107,7 @@ namespace ProjekatVeb2.Repository
 
         public async Task<List<Porudzbina>> MojePorudzbineProdavac(int prodavacId)
         {
-            var porudzbine = await _db.PoruzdbinaArtikli
+            var porudzbine = await _contextDB.PoruzdbinaArtikli
                 .Include(pa => pa.Porudzbina)
                 .Where(pa => pa.Artikal.KorisnikId == prodavacId && pa.Porudzbina.Status != StatusPorudzbine.UObradi)
                 .Select(pa => pa.Porudzbina)
@@ -122,7 +122,7 @@ namespace ProjekatVeb2.Repository
 
         public async Task<List<Artikal>> DobaviArtiklePorudzbine(int porudzbinaId)
         {
-            return await _db.PoruzdbinaArtikli
+            return await _contextDB.PoruzdbinaArtikli
                 .Include(pa => pa.Artikal)
                 .Where(pa => pa.IdPorudzbina == porudzbinaId)
                 .Select(pa => pa.Artikal)
@@ -132,7 +132,7 @@ namespace ProjekatVeb2.Repository
 
         public async Task<List<Artikal>> DobaviArtiklePorudzbineZaProdavca(int porudzbinaId, int prodavacId)
         {
-            return await _db.PoruzdbinaArtikli
+            return await _contextDB.PoruzdbinaArtikli
             .Include(pa => pa.Artikal)
             .Where(pa => pa.IdPorudzbina == porudzbinaId && pa.Artikal.KorisnikId == prodavacId)
             .Select(pa => pa.Artikal)

@@ -42,7 +42,7 @@ builder.Services.AddSingleton(jwtSettings);
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "PR522019_WEB2", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "PROJEKAT_WEB2", Version = "v1" });
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {

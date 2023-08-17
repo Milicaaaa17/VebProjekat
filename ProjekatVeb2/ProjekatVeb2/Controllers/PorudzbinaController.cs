@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using ProjekatVeb2.DTO;
 using ProjekatVeb2.Interfaces.IServices;
 using ProjekatVeb2.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ProjekatVeb2.Controllers
 {

@@ -9,34 +9,34 @@ namespace ProjekatVeb2.Repository
     public class ArtikalRepository : IArtikalRepository
     {
         
-        private readonly ContextDB _db;
+        private readonly ContextDB _contextDB;
 
-        public ArtikalRepository(ContextDB db)
+        public ArtikalRepository(ContextDB contextDB)
         {
-            _db = db;
+            _contextDB = contextDB;
         }
 
         public async Task<Artikal> ArtikalNaOsnovuId(int id)
         {
-            return await _db.Artikli.FindAsync(id);
+            return await _contextDB.Artikli.FindAsync(id);
         }
 
 
 
         public async Task<IEnumerable<Artikal>> ArtikalNaOsnovuNaziva(string naziv)
         {
-            return await _db.Artikli.Where(a => a.Naziv.Contains(naziv)).ToListAsync();
+            return await _contextDB.Artikli.Where(a => a.Naziv.Contains(naziv)).ToListAsync();
         }
 
         public async Task<IEnumerable<Artikal>> ArtikalNaOsnovuCijene(int minCijena, int maxCijena)
         {
-            return await _db.Artikli.Where(a => a.Cijena >= minCijena && a.Cijena <= maxCijena).ToListAsync();
+            return await _contextDB.Artikli.Where(a => a.Cijena >= minCijena && a.Cijena <= maxCijena).ToListAsync();
         }
 
         public async Task AzurirajArtikal(Artikal artikal)
         {
-            _db.Update(artikal);
-            await _db.SaveChangesAsync();
+            _contextDB.Update(artikal);
+            await _contextDB.SaveChangesAsync();
         }
 
         public async Task DodajArtikal(Artikal artikal)
@@ -46,50 +46,50 @@ namespace ProjekatVeb2.Repository
                 throw new ArgumentNullException(nameof(artikal), "Artikal ne može biti null.");
 
             }
-            _db.Artikli.Add(artikal);
-            await _db.SaveChangesAsync();
+            _contextDB.Artikli.Add(artikal);
+            await _contextDB.SaveChangesAsync();
         }
 
         public async Task ObrisiArtikal(int id)
         {
-            var artikal = await _db.Artikli.FindAsync(id);
+            var artikal = await _contextDB.Artikli.FindAsync(id);
             if (artikal != null)
             {
-                _db.Artikli.Remove(artikal);
-                await _db.SaveChangesAsync();
+                _contextDB.Artikli.Remove(artikal);
+                await _contextDB.SaveChangesAsync();
             }
         }
 
         public async Task<IEnumerable<Artikal>> SviArtikli()
         {
-            return await _db.Artikli.ToListAsync();
+            return await _contextDB.Artikli.ToListAsync();
         }
 
         public async Task<bool> ArtikalPostoji(int id)
         {
-            return await _db.Artikli.AnyAsync(a => a.IdArtikla == id);
+            return await _contextDB.Artikli.AnyAsync(a => a.IdArtikla == id);
         }
 
         public async Task<bool> ArtikalPostojiPoNazivu(string naziv)
         {
-            return await _db.Artikli.AnyAsync(a => a.Naziv == naziv);
+            return await _contextDB.Artikli.AnyAsync(a => a.Naziv == naziv);
         }
 
         public async Task AzurirajKolicinuArtikla(int artikalId, int novaKolicina)
         {
-            var artikal = await _db.Artikli.FindAsync(artikalId);
+            var artikal = await _contextDB.Artikli.FindAsync(artikalId);
             if (artikal == null)
             {
                 throw new Exception("Artikal sa datim ID-em ne postoji.");
             }
 
             artikal.Kolicina = novaKolicina;
-            await _db.SaveChangesAsync();
+            await _contextDB.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Artikal>> SviArtikliProdavca(int prodavacId)
         {
-            return await _db.Artikli.Where(a => a.KorisnikId == prodavacId).ToListAsync();
+            return await _contextDB.Artikli.Where(a => a.KorisnikId == prodavacId).ToListAsync();
         }
     }
 }
