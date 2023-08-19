@@ -47,7 +47,11 @@ namespace ProjekatVeb2.Services
             {
                 rezultat.Poruka.Add("Lozinke se ne poklapaju.");
             }
-
+            // Provjera datuma rođenja
+            if (registracijaDTO.DatumRodjenja > DateTime.Now)
+            {
+                rezultat.Poruka.Add("Datum rođenja ne može biti u budućnosti.");
+            }
             if (rezultat.Poruka.Count > 0)
             {
                 return rezultat;

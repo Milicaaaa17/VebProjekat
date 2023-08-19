@@ -47,6 +47,14 @@ const Registracija = () => {
       setUspjesnaRegistracija(false);
       return;
     }
+     // Validate birthdate
+  const today = new Date();
+  const selectedDate = new Date(datumRodjenja);
+  if (selectedDate > today) {
+    setGreske(['Datum rođenja ne može biti u budućnosti']);
+    setUspjesnaRegistracija(false);
+    return;
+  }
     if (!slika) {
       setGreske(['Morate odabrati fotografiju']);
       setUspjesnaRegistracija(false);

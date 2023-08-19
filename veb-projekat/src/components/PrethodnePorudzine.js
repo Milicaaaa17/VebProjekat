@@ -55,6 +55,8 @@ const PrethodnePorudzbine = () => {
           <tr>
             <th>ID</th>
             <th>Komentar</th>
+            <th>Ukupna Cijena</th>
+            <th>Cijena Dostave</th>
             <th>Adresa dostave</th>
             <th>Vrijeme dostave</th>
             <th>Status porudžbine</th>
@@ -67,6 +69,7 @@ const PrethodnePorudzbine = () => {
             <tr key={porudzbina1.idPorudzbine}>
               <td>{porudzbina1.idPorudzbine}</td>
               <td>{porudzbina1.komentar}</td>
+             
               <td>{porudzbina1.adresaDostave}</td>
               <td>{porudzbina1.vrijemeDostave}</td>
               <td>{mapirajStatus(porudzbina1.status)}</td>

@@ -1,19 +1,17 @@
 .forma-container {
-  max-width: 300px;
-  margin: 2rem auto; /* Podešavanje jednakih gornje i donje margine */
+  max-width: 400px;
+  margin: 2rem auto;
   padding: 2rem;
-  background-color: #fff;
+  background-color: transparent; /* Providno plavkasta pozadina */
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
 
 .forma-container h2 {
   text-align: center;
   margin-bottom: 1rem;
   color: #262626;
 }
-
 .forma-container form {
   display: flex;
   flex-direction: column;
@@ -61,7 +59,7 @@
 .forma-container button {
   padding: 0.5rem 1rem; /* Promijenjene vrijednosti padding margina */
   font-size: 1rem;
-  background-color: #0095f6;
+  background-color: #5b88a7;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -70,21 +68,23 @@
 }
 
 .forma-container button:hover {
-  background-color: #0085e6;
+  background-color: #09263d;
 }
-
 .forma-container a {
   margin-top: 0.5rem;
-  font-size: 0.9rem;
-  text-align: center;
-  color: #0095f6;
+  margin-left: 5rem;
+  font-size: 0.6rem;
+  color: rgb(243, 224, 224);
   text-decoration: none;
-  background-color: transparent;
+  background-color:  rgb(187, 126, 126);
   border: none;
+  border-bottom: 1px solid #5b88a7; /* Dodatno: dodajemo donju ivicu kao podvlačenje */
+  padding-bottom: 0.2rem; /* Dodatno: malo pomerimo podvlačenje od teksta */
+  display: inline-block; /* Dodato: omogućava da donja ivica bude samo pod tekstom */
 }
 
 .forma-container a:hover {
-  text-decoration: underline;
-  background-color: transparent;
+  background-color: #09263d;
   border: none;
+  text-decoration: none; /* Promenjeno: da bi se podvlačenje uklonilo pri hoveru */
 }

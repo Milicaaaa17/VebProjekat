@@ -1,12 +1,14 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
+  background-image: url('C:\Users\PC\Desktop\VEB_Projekat\VebProjekat\veb-projekat\src\components\pozadina.png'); /* Dodajte putanju do slike */
+  background-size: cover;
+  background-repeat: no-repeat;
   margin: 0;
   padding: 0;
 }
 
 .nav-menu {
-  background-color: #f0f0f0;
+  background-color: transparent;
   padding: 100px;
   display: flex;
   flex-direction: column;
@@ -36,14 +38,14 @@ li {
 
 a {
   text-decoration: none;
-  color: #ff0000;
+  color: #bda165;
   display: block;
   width: 200px;
   padding: 10px;
   border: 3px solid #000;
   border-radius: 10px;
   background-color: #000;
-  color: #ff0000;
+  color: #bda165;
   text-align: center;
   transition: background-color 0.3s ease, color 0.3s ease;
   font-weight: bold;
@@ -52,7 +54,7 @@ a {
 }
 
 a:hover {
-  background-color: #ff0000;
+  background-color: #bda165;
   color: #fff;
   box-shadow: 0px 0px 5px rgba(255, 0, 0, 0.5);
 }

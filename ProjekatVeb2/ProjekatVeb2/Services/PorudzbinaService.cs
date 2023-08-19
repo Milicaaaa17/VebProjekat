@@ -116,7 +116,7 @@ namespace ProjekatVeb2.Services
 
                 porudzbina.PorudzbinaArtikal.Add(porudzbinaArtikal);
                 artikal.Kolicina -= porudzbinaArtikalDto.Kolicina;
-
+                
                 porudzbina.UkupnaCijena += porudzbinaArtikalDto.Kolicina * artikal.Cijena;
             }
 
