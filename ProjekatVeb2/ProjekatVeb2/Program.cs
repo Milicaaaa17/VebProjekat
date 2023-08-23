@@ -34,6 +34,11 @@ builder.Services.AddSingleton(emailConfiguration);
 builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailConfiguration"));
 
 
+
+// Configure GoogleWebConfig
+var googleConfig = builder.Configuration.GetSection("Google:Web");
+builder.Services.AddSingleton(googleConfig);
+
 // Konfigurišite JwtSettings
 var jwtSettings = new JwtSettings();
 builder.Configuration.GetSection("JwtSettings").Bind(jwtSettings);

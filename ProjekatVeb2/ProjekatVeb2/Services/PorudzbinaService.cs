@@ -117,7 +117,7 @@ namespace ProjekatVeb2.Services
                 porudzbina.PorudzbinaArtikal.Add(porudzbinaArtikal);
                 artikal.Kolicina -= porudzbinaArtikalDto.Kolicina;
                 
-                porudzbina.UkupnaCijena += porudzbinaArtikalDto.Kolicina * artikal.Cijena;
+                porudzbina.UkupnaCijena += porudzbinaArtikalDto.Kolicina * artikal.Cijena + 200 ;
             }
 
             await _porudzbinaRepozitorijum.DodajPorudzbinu(porudzbina);
@@ -224,6 +224,7 @@ namespace ProjekatVeb2.Services
         {
             var mojePorudzbine = await _porudzbinaRepozitorijum.MojePorudzbineProdavac(prodavacId);
             var trenutnoVreme = DateTime.Now;
+
             foreach (var porudzbina in mojePorudzbine)
             {
                 if (porudzbina.Status != StatusPorudzbine.Otkazana && porudzbina.VrijemeDostave < trenutnoVreme)

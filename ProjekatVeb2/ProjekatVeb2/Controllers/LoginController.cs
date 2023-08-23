@@ -40,7 +40,21 @@ namespace ProjekatVeb2.Controllers
                 return BadRequest(rezultat);
             }
         }
+        [HttpPost("socialLogin")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GoogleLogin([FromForm] string googleToken)
+        {
+            try
+            {
+                var rezultatPrijave = await _loginService.LoginGoogle(googleToken);
 
-       
+                return Ok(rezultatPrijave.Token);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
     }
 }

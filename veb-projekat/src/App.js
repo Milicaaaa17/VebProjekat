@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import {  Route, Routes } from 'react-router-dom';
 import Pocetna from './components/Pocetna';
 import Login from './components/Login';
 import Registracija from './components/Registracija';
@@ -23,7 +23,7 @@ import DetaljiProdavca from './components/DetaljiProdavca';
 
 function App() {
   return (
-    <BrowserRouter>
+    
       <Routes>
       <Route path="/" element={<Pocetna />} />
         <Route path="/login" element={<Login />} />
@@ -47,7 +47,7 @@ function App() {
   
         
       </Routes>
-    </BrowserRouter>
+   
   );
 }
 

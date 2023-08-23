@@ -55,6 +55,7 @@ const NovePorudzbine = () => {
             <th>Komentar</th>
             <th>Adresa dostave</th>
             <th>Vrijeme dostave</th>
+            <th>Ukupna cijena</th>
             <th>Status porudzbine</th>
             <th>Opcije</th>
           </tr>
@@ -66,6 +67,7 @@ const NovePorudzbine = () => {
               <td>{porudzbina.komentar}</td>
               <td>{porudzbina.adresaDostave}</td>
               <td>{porudzbina.vrijemeDostave}</td>
+              <td>{porudzbina.ukupnaCijena}</td>
               <td>{mapirajStatus(porudzbina.status)}</td>
               <td>
                 <button onClick={() => prikaziDetaljePorudzbine(porudzbina.idPorudzbine)}>Detalji</button>

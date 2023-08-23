@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { getArtiklePorudzbine } from '../services/PorudzbinaService';
+import { getSvePorudzbineKupca, getArtiklePorudzbine } from '../services/PorudzbinaService';
 import { Link, useParams } from 'react-router-dom';
+import PrethodnePorudzbine from './PrethodnePorudzine';
 
 
 
@@ -29,14 +30,14 @@ const Detalji = () => {
 
   return (
     <div className="tabela-container">
-      <h2>Detalji porudzbine</h2>
+      <h2>Artikli koje ste narucili</h2>
       <table>
         <thead>
           <tr>
             <th>ID</th>
             <th>Naziv</th>
             <th>Cijena</th>
-            <th>Količina</th>
+           
             <th>Opis</th>
             <th>Slika</th>
           </tr>
@@ -47,7 +48,7 @@ const Detalji = () => {
               <td>{artikal.idArtikla}</td>
               <td>{artikal.naziv}</td>
               <td>{artikal.cijena}</td>
-              <td>{artikal.kolicina}</td>
+              
               <td>{artikal.opis}</td>
               <td>
             {artikal.slika && (

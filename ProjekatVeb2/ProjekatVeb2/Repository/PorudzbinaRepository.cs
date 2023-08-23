@@ -107,17 +107,19 @@ namespace ProjekatVeb2.Repository
 
         public async Task<List<Porudzbina>> MojePorudzbineProdavac(int prodavacId)
         {
+            var trenutnoVreme = DateTime.Now;
             var porudzbine = await _contextDB.PoruzdbinaArtikli
-                .Include(pa => pa.Porudzbina)
-                .Where(pa => pa.Artikal.KorisnikId == prodavacId && pa.Porudzbina.Status != StatusPorudzbine.UObradi)
-                .Select(pa => pa.Porudzbina)
-                .ToListAsync();
+                  .Include(pa => pa.Porudzbina)
+                  .Where(pa => pa.Artikal.KorisnikId == prodavacId && pa.Porudzbina.VrijemeDostave < trenutnoVreme)
+                  .Select(pa => pa.Porudzbina)
+                  .ToListAsync();
 
             var filtriranePorudzbine = porudzbine.GroupBy(p => p.IdPorudzbine)
                .Select(g => g.First())
                .ToList();
 
             return filtriranePorudzbine;
+
         }
 
         public async Task<List<Artikal>> DobaviArtiklePorudzbine(int porudzbinaId)

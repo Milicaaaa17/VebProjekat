@@ -21,6 +21,30 @@ export const prijaviKorisnika = async (podaci) => {
     }
     throw error;
   }
+
+  
+};
+
+
+export const prijavaPrekoGoogle = async (data) => {
+  try {
+    const headers = {
+      'Content-Type': 'multipart/form-data',
+    };
+
+    const response = await axios.post(`${baseUrl}/login/socialLogin`, data, {
+      headers:headers,
+    });
+
+    return response;
+    
+  }
+  catch(error)
+  {
+    console.error(error);
+   
+    throw new Error('Greška prilikom prijave korisnika.');
+  }
 };
 
 

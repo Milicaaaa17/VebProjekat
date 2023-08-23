@@ -701,3 +701,7 @@ C:\Users\PC\Desktop\VEB_Projekat\VebProjekat\ProjekatVeb2\ProjekatVeb2\obj\Debug
 C:\Users\PC\Desktop\VEB_Projekat\VebProjekat\ProjekatVeb2\ProjekatVeb2\obj\Debug\net6.0\ProjekatVeb2.pdb
 C:\Users\PC\Desktop\VEB_Projekat\VebProjekat\ProjekatVeb2\ProjekatVeb2\obj\Debug\net6.0\ProjekatVeb2.genruntimeconfig.cache
 C:\Users\PC\Desktop\VEB_Projekat\VebProjekat\ProjekatVeb2\ProjekatVeb2\obj\Debug\net6.0\ref\ProjekatVeb2.dll
+C:\Users\PC\Desktop\VEB_Projekat\VebProjekat\ProjekatVeb2\ProjekatVeb2\bin\Debug\net6.0\Google.Apis.dll
+C:\Users\PC\Desktop\VEB_Projekat\VebProjekat\ProjekatVeb2\ProjekatVeb2\bin\Debug\net6.0\Google.Apis.Auth.PlatformServices.dll
+C:\Users\PC\Desktop\VEB_Projekat\VebProjekat\ProjekatVeb2\ProjekatVeb2\bin\Debug\net6.0\Google.Apis.Auth.dll
+C:\Users\PC\Desktop\VEB_Projekat\VebProjekat\ProjekatVeb2\ProjekatVeb2\bin\Debug\net6.0\Google.Apis.Core.dll

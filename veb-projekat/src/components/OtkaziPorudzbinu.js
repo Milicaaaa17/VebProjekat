@@ -72,6 +72,8 @@ const OtkaziPorudzbinu = () => {
             <th>ID</th>
             <th>Komentar</th>
             <th>Adresa dostave</th>
+            <th>Cijena dostave</th>
+            <th>Ukupna cijena </th>
             <th>Vrijeme dostave</th>
             <th>Status porudžbine</th>
             <th>Opcije</th> 
@@ -84,6 +86,8 @@ const OtkaziPorudzbinu = () => {
               <td>{porudzbina.idPorudzbine}</td>
               <td>{porudzbina.komentar}</td>
               <td>{porudzbina.adresaDostave}</td>
+              <td>200</td>
+              <td>{porudzbina.ukupnaCijena}</td>
               <td>{porudzbina.vrijemeDostave}</td>
               <td>{mapirajStatus(porudzbina.status)}</td>
               <td>

@@ -185,6 +185,8 @@ namespace ProjekatVeb2.Controllers
             return Ok(prethodnePorudzbine);
         }
 
+
+
         [HttpGet("novePorudzbineProdavac/{prodavacId}")]
         [Authorize(Roles = "Prodavac")]
         public async Task<IActionResult> GetNovePorudzbineProdavac(int prodavacId)
